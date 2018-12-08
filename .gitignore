@@ -1,0 +1,15 @@
+extract_files
+.state
+build
+*.log
+my_capture.pcap
+mypackets.trace
+README.md.bu
+elastic/patches/files
+
+pcap/test2.pcap
+
+pcap/test.pcap
+.circleci/build_num
+pcap/local.bro
+kafka.out
