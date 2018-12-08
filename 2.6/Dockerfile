@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.8 as builder
 
 LABEL maintainer "https://github.com/blacktop"
 
@@ -39,19 +39,30 @@ RUN apk add --no-cache -t .build-deps \
   --disable-broctl \
   --disable-auxtools \
   && make \
-  && make install \
-  && echo "===> Compiling af_packet plugin..." \
-  && cd /tmp/zeek/aux/plugins \
-  && git clone https://github.com/J-Gras/bro-af_packet-plugin \
-  && cd /tmp/zeek/aux/plugins/bro-af_packet-plugin \
-  && make distclean \
-  && CC=clang ./configure --with-kernel=/usr \
-  && make \
-  && make install \
-  && echo "===> Shrinking image..." \
-  && strip -s /usr/local/bin/zeek \
-  && rm -rf /tmp/* \
-  && apk del --purge .build-deps
+  && make install
+# && echo "===> Compiling af_packet plugin..." \
+# && cd /tmp/zeek/aux/plugins \
+# && git clone https://github.com/J-Gras/bro-af_packet-plugin \
+# && cd /tmp/zeek/aux/plugins/bro-af_packet-plugin \
+# && make distclean \
+# && CC=clang ./configure --with-kernel=/usr \
+# && make \
+# && make install \
+# && echo "===> Shrinking image..." \
+# && strip -s /usr/local/bin/zeek \
+# && rm -rf /tmp/* \
+# && apk del --purge .build-deps
+
+FROM alpine:latest
+
+LABEL maintainer "https://github.com/blacktop"
+
+RUN apk --no-cache add ca-certificates
+
+COPY --from=builder /usr/local/bin/bro /usr/local/bin/bro
+COPY --from=builder /usr/local/bin/bro-config /usr/local/bin/bro-config
+COPY --from=builder /usr/local/lib/bro /usr/local/lib/bro
+COPY --from=builder /usr/local/share/bro /usr/local/share/bro
 
 ENV BROPATH .:/data/config:/usr/local/share/bro:/usr/local/share/bro/policy:/usr/local/share/bro/site
 
@@ -59,5 +70,5 @@ WORKDIR /pcap
 
 COPY local.bro /usr/local/share/bro/site/local.bro
 
-ENTRYPOINT ["/sbin/tini","--","bro"]
+ENTRYPOINT ["bro"]
 CMD ["-h"]
