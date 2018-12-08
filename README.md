@@ -1,4 +1,4 @@
-![bro-logo](https://github.com/blacktop/docker-zeek/raw/master/docs/imgs/logo.png)
+![bro-logo](https://github.com/blacktop/docker-zeek/raw/master/docs/logo.png)
 
 # docker-zeek [WIP] :construction:
 
