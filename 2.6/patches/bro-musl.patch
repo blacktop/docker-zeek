@@ -1,7 +1,7 @@
---- zeek-orig/CMakeLists.txt
-+++ zeek/CMakeLists.txt
-@@ -105,6 +105,29 @@
-     list(APPEND OPTLIBS ${LibGeoIP_LIBRARY})
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -149,6 +149,29 @@ if ( ${CMAKE_SYSTEM_NAME} MATCHES Linux )
+   endif ()
  endif ()
 
 +if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
@@ -30,9 +30,9 @@
  set(HAVE_PERFTOOLS false)
  set(USE_PERFTOOLS_DEBUG false)
  set(USE_PERFTOOLS_TCMALLOC false)
---- zeek-orig/src/OSFinger.h
-+++ zeek/src/OSFinger.h
-@@ -166,3 +166,57 @@
+--- a/src/OSFinger.h
++++ b/src/OSFinger.h
+@@ -159,3 +159,57 @@ private:
  #define MATCHFUZZY      0x2
 
  #endif
