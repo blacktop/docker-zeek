@@ -48,7 +48,7 @@ jobs:
           name: Run tests
           command: |
             set -x
-            docker create -v /usr/local/share/bro/site -v /pcap --name stuff alpine:3.6 /bin/true
+            docker create -v /usr/local/share/bro/site -v /pcap --name stuff alpine:3.8 /bin/true
             docker cp scripts/local.bro stuff:/usr/local/share/bro/site
             docker cp pcap/heartbleed.pcap stuff:/pcap
             docker run --rm app --version
