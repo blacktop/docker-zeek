@@ -44,14 +44,14 @@ RUN echo "===> Compiling zeek..." \
   && make \
   && make install
 
-RUN echo "===> Compiling af_packet plugin..." \
-  && cd /tmp/zeek/aux/plugins \
-  && git clone https://github.com/J-Gras/bro-af_packet-plugin \
-  && cd /tmp/zeek/aux/plugins/bro-af_packet-plugin \
-  && make distclean \
-  && CC=clang ./configure --with-kernel=/usr \
-  && make \
-  && make install
+# RUN echo "===> Compiling af_packet plugin..." \
+#   && cd /tmp/zeek/aux/plugins \
+#   && git clone https://github.com/J-Gras/bro-af_packet-plugin \
+#   && cd /tmp/zeek/aux/plugins/bro-af_packet-plugin \
+#   && make distclean \
+#   && CC=clang ./configure --with-kernel=/usr \
+#   && make \
+#   && make install
 
 RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/bin/bro
