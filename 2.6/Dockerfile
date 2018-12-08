@@ -30,14 +30,16 @@ RUN echo "===> Cloning zeek..." \
   && git clone --recursive --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git \
   && echo "===> Applying patches..." \
   && cd /tmp/zeek \
-  && patch -p1 < /tmp/bro-musl.patch \
-  && cp /tmp/FindFTS.cmake cmake \
-  && cd /tmp/zeek/aux/binpac \
-  && patch -p1 < /tmp/binpac-musl.patch
+  && git fetch origin pull/221/head:alpine \
+  && git checkout alpine
+# && patch -p1 < /tmp/bro-musl.patch \
+# && cp /tmp/FindFTS.cmake cmake \
+# && cd /tmp/zeek/aux/binpac \
+# && patch -p1 < /tmp/binpac-musl.patch
 
 RUN echo "===> Compiling zeek..." \
   && cd /tmp/zeek \
-  && CC=clang ./configure --prefix=/usr/local \
+  && CC=clang ./configure --prefix=/usr/local/bro \
   --disable-broker-tests \
   --disable-broctl \
   --disable-auxtools \
@@ -54,25 +56,22 @@ RUN echo "===> Compiling zeek..." \
 #   && make install
 
 RUN echo "===> Shrinking image..." \
-  && strip -s /usr/local/bin/bro
+  && strip -s /usr/local/bro/bin/bro
 
 ####################################################################################################
 FROM alpine:latest
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates geoip
+RUN apk --no-cache add ca-certificates geoip openssl libpcap
 
-COPY --from=builder /usr/local/bin/bro /usr/local/bin/bro
-COPY --from=builder /usr/local/bin/bro-config /usr/local/bin/bro-config
-COPY --from=builder /usr/local/lib/bro /usr/local/lib/bro
-COPY --from=builder /usr/local/share/bro /usr/local/share/bro
-
-ENV BROPATH .:/data/config:/usr/local/share/bro:/usr/local/share/bro/policy:/usr/local/share/bro/site
+COPY --from=builder /usr/local/bro /bro
+COPY local.bro /usr/local/share/bro/site/local.bro
 
 WORKDIR /pcap
 
-COPY local.bro /usr/local/share/bro/site/local.bro
+ENV BROPATH .:/data/config:/usr/local/share/bro:/usr/local/share/bro/policy:/usr/local/share/bro/site
+ENV PATH $PATH:/bro/bin
 
 ENTRYPOINT ["bro"]
 CMD ["-h"]
