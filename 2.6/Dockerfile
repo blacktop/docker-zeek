@@ -25,7 +25,7 @@ RUN apk add --no-cache -t .build-deps \
   fts
 
 COPY patches /tmp
-RUN \
+RUN echo "===> Cloning zeek..." \
   && cd /tmp \
   && git clone --recursive --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git \
   && echo "===> Applying patches..." \
