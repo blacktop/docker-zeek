@@ -23,7 +23,7 @@
 
 ## Dependencies
 
-- [alpine:3.7](https://hub.docker.com/_/alpine/)
+- [alpine:3.8](https://hub.docker.com/_/alpine/)
 
 ## Image Tags
 
