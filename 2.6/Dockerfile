@@ -34,9 +34,10 @@ RUN apk add --no-cache -t .build-deps \
   && patch -p1 < /tmp/binpac-musl.patch \
   && echo "===> Compiling zeek..." \
   && cd /tmp/zeek \
-  && CC=clang ./configure --disable-broker \
-  --disable-broctl --disable-broccoli \
-  --disable-auxtools --prefix=/usr/local \
+  && CC=clang ./configure --prefix=/usr/local \
+  --disable-broker-tests \
+  --disable-broctl \
+  --disable-auxtools \
   && make \
   && make install \
   && echo "===> Compiling af_packet plugin..." \
