@@ -47,7 +47,7 @@ $ wget https://github.com/blacktop/docker-zeek/raw/master/pcap/heartbleed.pcap
 $ wget https://github.com/blacktop/docker-zeek/raw/master/scripts/local.bro
 $ docker run --rm \
          -v `pwd`:/pcap \
-         -v `pwd`/local.bro:/usr/local/share/bro/site/local.bro \  # All default modules loaded
+         -v `pwd`/local.bro:/usr/local/bro/share/bro/site/local.bro \  # All default modules loaded
          blacktop/zeek -r heartbleed.pcap local "Site::local_nets += { 192.168.11.0/24 }"
 ```
 
