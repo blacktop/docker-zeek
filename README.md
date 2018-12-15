@@ -1,10 +1,10 @@
 ![bro-logo](https://github.com/blacktop/docker-zeek/raw/master/docs/logo.png)
 
-# docker-zeek [WIP] :construction:
+# docker-zeek
 
-[![CircleCI](https://circleci.com/gh/blacktop/docker-zeek.png?style=shield)](https://circleci.com/gh/blacktop/docker-zeek) [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org) [![Docker Stars](https://img.shields.io/docker/stars/blacktop/zeek.svg)](https://hub.docker.com/r/blacktop/zeek/) [![Docker Pulls](https://img.shields.io/docker/pulls/blacktop/zeek.svg)](https://hub.docker.com/r/blacktop/zeek/) [![Docker Image](https://img.shields.io/badge/docker%20image-22.2MB-blue.svg)](https://hub.docker.com/r/blacktop/zeek/)
+[![CircleCI](https://circleci.com/gh/blacktop/docker-zeek.png?style=shield)](https://circleci.com/gh/blacktop/docker-zeek) [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org) [![Docker Stars](https://img.shields.io/docker/stars/blacktop/zeek.svg)](https://hub.docker.com/r/blacktop/zeek/) [![Docker Pulls](https://img.shields.io/docker/pulls/blacktop/zeek.svg)](https://hub.docker.com/r/blacktop/zeek/) [![Docker Image](https://img.shields.io/badge/docker%20image-165MB-blue.svg)](https://hub.docker.com/r/blacktop/zeek/)
 
-> Zeek IDS Dockerfile
+> [Zeek Network Security Monitor](https://github.com/zeek/zeek) Dockerfile
 
 ---
 
@@ -31,8 +31,8 @@
 $ docker images
 
 REPOSITORY          TAG           SIZE
-blacktop/zeek        latest        22.2MB
-blacktop/zeek        2.6           22.2MB
+blacktop/zeek        latest        165MB
+blacktop/zeek        2.6           165MB
 ```
 
 ## Installation

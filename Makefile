@@ -22,7 +22,7 @@ endif
 tags:
 	docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" $(ORG)/$(NAME)
 
-test: stop-all ## Test docker image
+test: ## Test docker image
 ifeq ($(BUILD),elastic)
 	@docker-compose -f docker-compose.elastic.yml up -d kibana
 	@docker-compose -f docker-compose.elastic.yml up bro
@@ -37,7 +37,7 @@ else ifeq ($(BUILD),redis)
 	@open -a Safari https://goo.gl/e5v7Qr
 else
 	@docker run --rm $(ORG)/$(NAME):$(BUILD) --version
-	@docker run --rm -v `pwd`/pcap:/pcap -v `pwd`/scripts/local.bro:/usr/local/share/bro/site/local.bro $(ORG)/$(NAME):$(BUILD) -r heartbleed.pcap local "Site::local_nets += { 192.168.11.0/24 }"
+	@docker run --rm -v `pwd`/pcap:/pcap -v `pwd`/scripts/local.bro:/usr/local/bro/share/bro/site/local.bro $(ORG)/$(NAME):$(BUILD) -r heartbleed.pcap local "Site::local_nets += { 192.168.11.0/24 }"
 	@cat pcap/notice.log | awk '{ print $$11 }' | tail -n4
 endif
 

@@ -24,19 +24,20 @@ RUN apk add --no-cache -t .build-deps \
   g++ \
   fts
 
-COPY patches /tmp
 RUN echo "===> Cloning zeek..." \
   && cd /tmp \
-  && git clone --recursive --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git \
-  && echo "===> Applying patches..." \
-  && cd /tmp/zeek \
-  && git fetch origin pull/221/head:alpine \
-  && git checkout alpine
+  && git clone --recursive https://github.com/zeek/zeek.git
+# && git clone --recursive --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git \
+# && echo "===> Applying patches..." \
+# && cd /tmp/zeek \
+# && git fetch origin pull/221/head:alpine \
+# && git checkout alpine
 # && patch -p1 < /tmp/bro-musl.patch \
 # && cp /tmp/FindFTS.cmake cmake \
 # && cd /tmp/zeek/aux/binpac \
 # && patch -p1 < /tmp/binpac-musl.patch
 
+# COPY patches/FindFTS.cmake /tmp/zeek/cmake/
 RUN echo "===> Compiling zeek..." \
   && cd /tmp/zeek \
   && CC=clang ./configure --prefix=/usr/local/bro \
@@ -63,15 +64,15 @@ FROM alpine:latest
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates geoip openssl libpcap
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap geoip libgcc fts
 
-COPY --from=builder /usr/local/bro /bro
+COPY --from=builder /usr/local/bro /usr/local/bro
 COPY local.bro /usr/local/share/bro/site/local.bro
 
 WORKDIR /pcap
 
-ENV BROPATH .:/data/config:/usr/local/share/bro:/usr/local/share/bro/policy:/usr/local/share/bro/site
-ENV PATH $PATH:/bro/bin
+ENV BROPATH .:/data/config:/usr/local/bro/share/bro:/usr/local/bro/share/bro/policy:/usr/local/bro/share/bro/site
+ENV PATH $PATH:/usr/local/bro/bin
 
 ENTRYPOINT ["bro"]
 CMD ["-h"]
