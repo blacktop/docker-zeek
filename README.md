@@ -16,7 +16,6 @@
 - [Getting Started](#getting-started)
 - [Documentation](#documentation)
 - [Issues](#issues)
-- [Todo](#todo)
 - [CHANGELOG](#changelog)
 - [Contributing](#contributing)
 - [License](#license)

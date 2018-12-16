@@ -66,7 +66,7 @@
 # certificate notary service; see http://notary.icsi.berkeley.edu .
 @load protocols/ssl/notary
 
-# If you have libGeoIP support built in, do some geographic detections and
+# If you have GeoIP support built in, do some geographic detections and
 # logging for SSH traffic.
 @load protocols/ssh/geo-data
 # Detect hosts doing SSH bruteforce attacks.
@@ -85,6 +85,9 @@
 # Detect SHA1 sums in Team Cymru's Malware Hash Registry.
 @load frameworks/files/detect-MHR
 
+# Extend email alerting to include hostnames
+@load policy/frameworks/notice/extend-email/hostnames
+
 # Uncomment the following line to enable detection of the heartbleed attack. Enabling
 # this might impact performance a bit.
 @load policy/protocols/ssl/heartbleed
@@ -97,6 +100,4 @@
 # this adds the link-layer address for each connection endpoint to the conn.log file.
 @load policy/protocols/conn/mac-logging
 
-# Uncomment the following line to enable the SMB analyzer.  The analyzer
-# is currently considered a preview and therefore not loaded by default.
-@load policy/protocols/smb
+@load base/protocols/smb

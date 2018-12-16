@@ -27,17 +27,8 @@ RUN apk add --no-cache -t .build-deps \
 RUN echo "===> Cloning zeek..." \
   && cd /tmp \
   && git clone --recursive https://github.com/zeek/zeek.git
-# && git clone --recursive --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git \
-# && echo "===> Applying patches..." \
-# && cd /tmp/zeek \
-# && git fetch origin pull/221/head:alpine \
-# && git checkout alpine
-# && patch -p1 < /tmp/bro-musl.patch \
-# && cp /tmp/FindFTS.cmake cmake \
-# && cd /tmp/zeek/aux/binpac \
-# && patch -p1 < /tmp/binpac-musl.patch
+# && git clone --recursive --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git
 
-# COPY patches/FindFTS.cmake /tmp/zeek/cmake/
 RUN echo "===> Compiling zeek..." \
   && cd /tmp/zeek \
   && CC=clang ./configure --prefix=/usr/local/bro \
