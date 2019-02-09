@@ -26,7 +26,8 @@ RUN apk add --no-cache -t .build-deps \
 
 RUN echo "===> Cloning zeek..." \
   && cd /tmp \
-  && git clone --recursive --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git
+  && git clone --recursive https://github.com/zeek/zeek.git
+# && git clone --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git
 
 RUN echo "===> Compiling zeek..." \
   && cd /tmp/zeek \
