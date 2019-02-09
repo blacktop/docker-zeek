@@ -2,7 +2,7 @@ FROM alpine:3.8 as builder
 
 LABEL maintainer "https://github.com/blacktop"
 
-ENV ZEEK_VERSION 2.6
+ENV ZEEK_VERSION 2.6.1
 
 RUN apk add --no-cache zlib openssl libstdc++ libpcap geoip libgcc tini
 RUN apk add --no-cache -t .build-deps \
@@ -26,8 +26,7 @@ RUN apk add --no-cache -t .build-deps \
 
 RUN echo "===> Cloning zeek..." \
   && cd /tmp \
-  && git clone --recursive https://github.com/zeek/zeek.git
-# && git clone --recursive --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git
+  && git clone --recursive --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git
 
 RUN echo "===> Compiling zeek..." \
   && cd /tmp/zeek \
@@ -51,7 +50,7 @@ RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/bro/bin/bro
 
 ####################################################################################################
-FROM alpine:latest
+FROM alpine:3.8
 
 LABEL maintainer "https://github.com/blacktop"
 
