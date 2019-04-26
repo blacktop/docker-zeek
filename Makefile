@@ -24,10 +24,13 @@ tags:
 
 test: ## Test docker image
 ifeq ($(BUILD),elastic)
-	@docker-compose -f docker-compose.elastic.yml up -d kibana
-	@docker-compose -f docker-compose.elastic.yml up bro
-	@http localhost:9200/_cat/indices
-	@open -a Safari https://goo.gl/e5v7Qr
+	# @docker-compose -f docker-compose.elastic.yml up -d kibana
+	# @docker-compose -f docker-compose.elastic.yml up bro
+	# @http localhost:9200/_cat/indices
+	# @open -a Safari https://goo.gl/e5v7Qr
+	@docker run --rm $(ORG)/$(NAME):$(BUILD) --version
+	@docker run --rm -v `pwd`/pcap:/pcap $(ORG)/$(NAME):$(BUILD) -r heartbleed.pcap local "Site::local_nets += { 192.168.11.0/24 }"
+	@cat pcap/json_streaming_notice.1.log | jq .note
 else ifeq ($(BUILD),kafka)
 	@tests/kafka.sh
 else ifeq ($(BUILD),redis)
@@ -56,7 +59,7 @@ run: stop ## Run docker container
 
 .PHONY: ssh
 ssh: ## SSH into docker image
-	@docker run --init -it --rm --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
+	@docker run --init -it --rm --link elasticsearch --link kibana -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
 
 .PHONY: stop
 stop: ## Kill running docker containers

@@ -42,7 +42,8 @@ RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
   && apk add --no-cache py-pip librdkafka-dev \
   && pip install bro-pkg \
   && bro-pkg autoconfig \
-  && bro-pkg install apache/metron-bro-plugin-kafka --version master --force
+  && bro-pkg install apache/metron-bro-plugin-kafka --version master --force \
+  && bro-pkg load apache/metron-bro-plugin-kafka
 
 RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/bro/bin/bro

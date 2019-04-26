@@ -38,12 +38,17 @@ RUN echo "===> Compiling zeek..." \
   && make \
   && make install
 
+RUN echo "===> Installing hosom/file-extraction package..." \
+  && cd /tmp \
+  && git clone https://github.com/hosom/file-extraction.git \
+  && find file-extraction -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
+  && mv file-extraction/scripts /usr/local/bro/share/bro/site/file-extraction
+
 RUN echo "===> Installing corelight/json-streaming-logs package..." \
-  && apk add --no-cache py-pip \
-  && pip install bro-pkg \
-  && bro-pkg autoconfig \
-  && bro-pkg install corelight/json-streaming-logs --force \
-  && bro-pkg load corelight/json-streaming-logs
+  && cd /tmp \
+  && git clone https://github.com/corelight/json-streaming-logs.git json-streaming-logs \
+  && find json-streaming-logs -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
+  && mv json-streaming-logs/scripts /usr/local/bro/share/bro/site/json-streaming-logs
 
 RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/bro/bin/bro
@@ -53,10 +58,22 @@ FROM alpine:3.8
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap geoip libgcc fts
+ENV BEAT_VERSION 7.0.0
+
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap geoip libgcc fts libc6-compat
 
 COPY --from=builder /usr/local/bro /usr/local/bro
-COPY local.bro /usr/local/share/bro/site/local.bro
+COPY local.bro /usr/local/bro/share/bro/site/local.zeek
+
+RUN \
+  cd /tmp \
+  && wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${BEAT_VERSION}-linux-x86_64.tar.gz \
+  && tar xzvf filebeat-${BEAT_VERSION}-linux-x86_64.tar.gz \
+  && mv filebeat-${BEAT_VERSION}-linux-x86_64 /usr/share/filebeat \
+  && rm -rf /tmp/*
+
+ENV PATH $PATH:/usr/share/filebeat
+COPY config /usr/share/filebeat
 
 WORKDIR /pcap
 
@@ -65,3 +82,4 @@ ENV PATH $PATH:/usr/local/bro/bin
 
 ENTRYPOINT ["bro"]
 CMD ["-h"]
+# CMD ["./filebeat", "-e", "-c", "/usr/share/filebeat/config/filebeat.yml"]

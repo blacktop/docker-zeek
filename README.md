@@ -32,7 +32,7 @@ $ docker images
 REPOSITORY           TAG          SIZE
 blacktop/zeek        latest       168MB
 blacktop/zeek        2.6          168MB
-blacktop/zeek        elastic      168MB
+blacktop/zeek        elastic      211MB
 blacktop/zeek        kafka        168MB
 ```
 
