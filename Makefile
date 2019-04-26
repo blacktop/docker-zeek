@@ -59,7 +59,13 @@ run: stop ## Run docker container
 
 .PHONY: ssh
 ssh: ## SSH into docker image
+ifeq ($(BUILD),elastic)
+	@docker run -d --name elasticsearch -p 9200:9200 blacktop/elasticsearch:7.0
+	@docker run --init -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.0
 	@docker run --init -it --rm --link elasticsearch --link kibana -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
+else
+	@docker run --rm -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
+endif
 
 .PHONY: stop
 stop: ## Kill running docker containers

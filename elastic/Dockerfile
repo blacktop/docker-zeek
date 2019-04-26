@@ -52,34 +52,40 @@ RUN echo "===> Installing corelight/json-streaming-logs package..." \
 
 RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/bro/bin/bro
-
 ####################################################################################################
-FROM alpine:3.8
-
-LABEL maintainer "https://github.com/blacktop"
+FROM alpine:3.8 as filebeat
 
 ENV BEAT_VERSION 7.0.0
-
-RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap geoip libgcc fts libc6-compat
-
-COPY --from=builder /usr/local/bro /usr/local/bro
-COPY local.bro /usr/local/bro/share/bro/site/local.zeek
 
 RUN \
   cd /tmp \
   && wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${BEAT_VERSION}-linux-x86_64.tar.gz \
   && tar xzvf filebeat-${BEAT_VERSION}-linux-x86_64.tar.gz \
   && mv filebeat-${BEAT_VERSION}-linux-x86_64 /usr/share/filebeat \
-  && rm -rf /tmp/*
+  && mkdir /usr/share/filebeat/logs /usr/share/filebeat/data
 
-ENV PATH $PATH:/usr/share/filebeat
 COPY config /usr/share/filebeat
+####################################################################################################
+FROM alpine:3.8
+
+LABEL maintainer "https://github.com/blacktop"
+
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap geoip libgcc fts libc6-compat
+
+COPY --from=builder /usr/local/bro /usr/local/bro
+COPY local.bro /usr/local/bro/share/bro/site/local.zeek
 
 WORKDIR /pcap
 
 ENV BROPATH .:/data/config:/usr/local/bro/share/bro:/usr/local/bro/share/bro/policy:/usr/local/bro/share/bro/site
 ENV PATH $PATH:/usr/local/bro/bin
 
-ENTRYPOINT ["bro"]
+COPY --from=filebeat /usr/share/filebeat /usr/share/filebeat
+ENV PATH $PATH:/usr/share/filebeat
+
+COPY entrypoint.sh /usr/local/bin/entrypoint
+RUN chmod +x /usr/local/bin/entrypoint
+
+ENTRYPOINT ["/usr/local/bin/entrypoint"]
 CMD ["-h"]
 # CMD ["./filebeat", "-e", "-c", "/usr/share/filebeat/config/filebeat.yml"]

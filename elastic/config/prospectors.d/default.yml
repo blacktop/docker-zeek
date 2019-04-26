@@ -1,3 +1,0 @@
-- type: log
-  paths:
-    - /pcap/*.log

@@ -1,22 +1,46 @@
-filebeat.inputs:
-- type: log
-  paths:
-    - /pcap
-
 filebeat.config:
-  # prospectors:
-  #   path: ${path.config}/prospectors.d/*.yml
-  #   reload.enabled: false
   modules:
     path: ${path.config}/modules.d/*.yml
-    reload.enabled: true
+    reload.enabled: false
 
-# processors:
-# - add_cloud_metadata:
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+
+filebeat.modules:
+- module: zeek
+  # All logs
+  connection:
+    enabled: true
+  dns:
+    enabled: true
+    var.paths:
+      - /pcap/*dns*.log
+  http:
+    enabled: true
+    var.paths:
+      - /pcap/*http*.log
+  files:
+    enabled: true
+    var.paths:
+      - /pcap/*files*.log
+  ssl:
+    enabled: true
+    var.paths:
+      - /pcap/*ssl*.log
+  notice:
+    enabled: true
+    var.paths:
+      - /pcap/*notice*.log
+
+processors:
+- add_cloud_metadata: ~
 
 output.elasticsearch:
-  hosts: ['http://elasticsearch:9200']
+  hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
+  username: '${ELASTICSEARCH_USERNAME:}'
+  password: '${ELASTICSEARCH_PASSWORD:}'
+
 setup.kibana:
-  host: "http://kibana:5601"
-  # username: elastic
-  # password: changeme
+  host: '${KIBANA_HOST:kibana:5601}'
