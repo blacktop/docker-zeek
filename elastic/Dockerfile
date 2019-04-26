@@ -66,6 +66,14 @@ RUN \
 
 COPY config /usr/share/filebeat
 ####################################################################################################
+FROM alpine:3.8 as geoip
+# Install the GeoIPLite Database
+RUN apk add --no-cache curl \
+  && mkdir -p /usr/share/GeoIP/ \
+  && GEOIP=geolite.maxmind.com/download/geoip/database \
+  && curl -s http://${GEOIP}/GeoLiteCity.dat.gz | zcat > /usr/share/GeoIP/GeoIPCity.dat \
+  && curl -s http://${GEOIP}/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz | zcat > /usr/share/GeoIP/GeoIPCityv6.dat
+####################################################################################################
 FROM alpine:3.8
 
 LABEL maintainer "https://github.com/blacktop"
@@ -82,6 +90,8 @@ ENV PATH $PATH:/usr/local/bro/bin
 
 COPY --from=filebeat /usr/share/filebeat /usr/share/filebeat
 ENV PATH $PATH:/usr/share/filebeat
+
+COPY --from=geoip /usr/share/GeoIP /usr/share/GeoIP
 
 COPY entrypoint.sh /usr/local/bin/entrypoint
 RUN chmod +x /usr/local/bin/entrypoint

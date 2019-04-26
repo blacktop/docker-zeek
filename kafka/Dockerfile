@@ -39,11 +39,15 @@ RUN echo "===> Compiling zeek..." \
   && make install
 
 RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
-  && apk add --no-cache py-pip librdkafka-dev \
-  && pip install bro-pkg \
-  && bro-pkg autoconfig \
-  && bro-pkg install apache/metron-bro-plugin-kafka --version master --force \
-  && bro-pkg load apache/metron-bro-plugin-kafka
+  && cd /tmp/zeek/aux/plugins \
+  && git clone https://github.com/apache/metron-bro-plugin-kafka.git \
+  && apk add --no-cache librdkafka-dev \
+  && cd /tmp/zeek/aux/plugins/metron-bro-plugin-kafka \
+  && find . -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
+  && CC=clang ./configure --bro-dist=/tmp/zeek \
+  && make \
+  && make install \
+  && bro -N Apache::Kafka
 
 RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/bro/bin/bro
