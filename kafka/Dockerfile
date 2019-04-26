@@ -35,7 +35,7 @@ RUN echo "===> Compiling zeek..." \
   --disable-broker-tests \
   --disable-broctl \
   --disable-auxtools \
-  && make \
+  && make -j `nproc` \
   && make install
 
 RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
