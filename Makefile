@@ -57,11 +57,29 @@ push: build ## Push docker image to docker registry
 run: stop ## Run docker container
 	@docker run --init -d --name $(NAME) -p 9200:9200 $(ORG)/$(NAME):$(BUILD)
 
+.PHONY: start_elasticsearch
+start_elasticsearch:
+ifeq ("$(shell docker inspect -f {{.State.Running}} elasticsearch)", "true")
+	@echo "===> elasticsearch already running.  Stopping now..."
+	@docker rm -f elasticsearch || true
+endif
+	@echo "===> Starting elasticsearch"
+	@docker run --init -d --name elasticsearch -p 9200:9200 malice/elasticsearch:7.0
+	@wait-for-es
+
+.PHONY: start_kibana
+start_kibana:
+ifeq ("$(shell docker inspect -f {{.State.Running}} kibana)", "true")
+	@echo "===> kibana already running.  Stopping now..."
+	@docker rm -f kibana || true
+endif
+	@echo "===> Starting kibana"
+	@docker run --init -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.0
+
 .PHONY: ssh
 ssh: ## SSH into docker image
 ifeq ($(BUILD),elastic)
-	@docker run -d --name elasticsearch -p 9200:9200 blacktop/elasticsearch:7.0
-	@docker run --init -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.0
+ssh: start_elasticsearch start_kibana
 	@docker run --init -it --rm --link elasticsearch --link kibana -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
 else
 	@docker run --rm -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
