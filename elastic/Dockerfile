@@ -6,6 +6,7 @@ ENV ZEEK_VERSION 2.6.1
 
 RUN apk add --no-cache zlib openssl libstdc++ libpcap geoip libgcc tini
 RUN apk add --no-cache -t .build-deps \
+  libmaxminddb-dev \
   linux-headers \
   openssl-dev \
   libpcap-dev \
@@ -66,19 +67,11 @@ RUN \
 
 COPY config /usr/share/filebeat
 ####################################################################################################
-FROM alpine:3.8 as geoip
-# Install the GeoIPLite Database
-RUN apk add --no-cache curl \
-  && mkdir -p /usr/share/GeoIP/ \
-  && GEOIP=geolite.maxmind.com/download/geoip/database \
-  && curl -s http://${GEOIP}/GeoLiteCity.dat.gz | zcat > /usr/share/GeoIP/GeoIPCity.dat \
-  && curl -s http://${GEOIP}/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz | zcat > /usr/share/GeoIP/GeoIPCityv6.dat
-####################################################################################################
 FROM alpine:3.8
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap geoip libgcc fts libc6-compat
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap geoip libgcc fts libc6-compat libmaxminddb
 
 COPY --from=builder /usr/local/bro /usr/local/bro
 COPY local.bro /usr/local/bro/share/bro/site/local.zeek

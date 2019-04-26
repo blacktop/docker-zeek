@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOSTS:-elasticsearch:9200}
-KIBANA_HOST=${ELASTICSEARCH_HOSTS:-kibana:5601}
-
 # Wait for elasticsearch to start. It requires that the status be either
 # green or yellow.
 waitForElasticsearch() {
+  ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOSTS:-elasticsearch:9200}
   echo -n "===> Waiting on elasticsearch(${ELASTICSEARCH_HOSTS}) to start..."
   i=0;
   while [ $i -le 60 ]; do
@@ -59,7 +57,7 @@ startFilebeat() {
 
 if [[ -z $1 ]] || [[ ${1:0:1} == '-' ]] ; then
   waitForElasticsearch
-  waitFor ${KIBANA_HOST} Kibana
+  waitFor ${KIBANA_HOST:-kibana:5601} Kibana
   startFilebeat
   cd /pcap
   exec bro "$@"
