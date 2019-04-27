@@ -4,7 +4,7 @@ set -euo pipefail
 
 geoipInfo(){
   ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOSTS:-elasticsearch:9200}
-  echo "Adding geoip-info pipeline..."
+  echo "===> Adding geoip-info pipeline..."
   curl -X PUT "${ELASTICSEARCH_HOSTS}/_ingest/pipeline/geoip-info" -H 'Content-Type: application/json' -d'
   {
     "description": "Add geoip info",
@@ -61,7 +61,7 @@ geoipInfo(){
     ]
   }
   '
-  echo "\n\t* Done."
+  echo -e "\n\t* Done."
 }
 # Wait for elasticsearch to start. It requires that the status be either
 # green or yellow.

@@ -100,8 +100,11 @@
 # this adds the link-layer address for each connection endpoint to the conn.log file.
 @load policy/protocols/conn/mac-logging
 
-# @load packages
-@load json-streaming-logs
+# Custom conn geoip enrichment
+@load geodata/conn-add-geodata.bro
+
 @load file-extraction
+
 # JSON Plugin
+@load json-streaming-logs
 redef JSONStreaming::disable_default_logs = T;
