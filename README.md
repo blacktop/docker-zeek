@@ -80,7 +80,6 @@ Heartbleed::SSL_Heartbeat_Attack_Success
 - [Usage](https://github.com/blacktop/docker-zeek/blob/master/docs/usage.md)
 - [Integrate with the Elasticsearch](https://github.com/blacktop/docker-zeek/blob/master/docs/elastic.md)
 - [Integrate with Kafka](https://github.com/blacktop/docker-zeek/blob/master/docs/kafka.md)
-- [Integrate with Redis](https://github.com/blacktop/docker-zeek/blob/master/docs/redis.md)
 - [Tips and Tricks](https://github.com/blacktop/docker-zeek/blob/master/docs/tips-and-tricks.md)
 
 ## Issues
