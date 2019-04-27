@@ -45,9 +45,10 @@ RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
   && cd /tmp/zeek/aux/metron-bro-plugin-kafka \
   && find . -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
   && CC=clang ./configure --bro-dist=/tmp/zeek \
-  && make \
-  && make install \
-  && bro -N Apache::Kafka
+  && make -j `nproc` \
+  && make install
+
+RUN echo "===> Check if kafka plugin installed..." && /usr/local/bro/bin/bro -N Apache::Kafka
 
 RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/bro/bin/bro
@@ -60,7 +61,7 @@ LABEL maintainer "https://github.com/blacktop"
 RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap geoip libgcc fts librdkafka
 
 COPY --from=builder /usr/local/bro /usr/local/bro
-COPY local.bro /usr/local/share/bro/site/local.bro
+COPY local.bro /usr/local/bro/share/bro/site/local.zeek
 
 WORKDIR /pcap
 

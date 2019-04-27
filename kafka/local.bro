@@ -106,6 +106,6 @@ redef Kafka::logs_to_send = set(Conn::LOG, HTTP::LOG, SSL::LOG, Files::LOG, DNS:
 redef Kafka::kafka_conf = table(
     ["metadata.broker.list"] = "kafka:9092"
 );
-redef Kafka::topic_name = "bro";
+redef Kafka::topic_name = "zeek";
 redef Kafka::max_wait_on_shutdown = 3000;
 redef Kafka::tag_json = T;
