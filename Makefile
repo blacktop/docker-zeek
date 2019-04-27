@@ -24,6 +24,7 @@ tags:
 
 test: ## Test docker image
 ifeq ($(BUILD),elastic)
+test: start_elasticsearch start_kibana
 	# @docker-compose -f docker-compose.elastic.yml up -d kibana
 	# @docker-compose -f docker-compose.elastic.yml up bro
 	# @http localhost:9200/_cat/indices
