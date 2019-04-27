@@ -4,13 +4,13 @@ LABEL maintainer "https://github.com/blacktop"
 
 ENV ZEEK_VERSION 2.6.1
 
-RUN apk add --no-cache zlib openssl libstdc++ libpcap geoip libgcc tini
+RUN apk add --no-cache zlib openssl libstdc++ libpcap libgcc
 RUN apk add --no-cache -t .build-deps \
+  libmaxminddb-dev \
   linux-headers \
   openssl-dev \
   libpcap-dev \
   python-dev \
-  geoip-dev \
   zlib-dev \
   binutils \
   fts-dev \
@@ -50,16 +50,6 @@ RUN echo "===> Installing corelight/json-streaming-logs package..." \
   && find json-streaming-logs -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
   && mv json-streaming-logs/scripts /usr/local/bro/share/bro/site/json-streaming-logs
 
-# RUN echo "===> Installing corelight/bro-maxminddb package..." \
-#   && cd /tmp/zeek/aux/ \
-#   && git clone https://github.com/corelight/bro-maxminddb.git \
-#   && apk add --no-cache libmaxminddb-dev \
-#   && cd /tmp/zeek/aux/bro-maxminddb \
-#   && find . -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
-#   && CC=clang ./configure --bro-dist=/tmp/zeek \
-#   && make -j `nproc` \
-#   && make install
-
 RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/bro/bin/bro
 ####################################################################################################
@@ -82,21 +72,22 @@ ENV MAXMIND_CITY https://geolite.maxmind.com/download/geoip/database/GeoLite2-Ci
 ENV MAXMIND_CNTRY https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz
 ENV GITHUB_CITY https://github.com/blacktop/docker-zeek/raw/master/maxmind/GeoLite2-City.tar.gz
 ENV GITHUB_CNTRY https://github.com/blacktop/docker-zeek/raw/master/maxmind/GeoLite2-Country.tar.gz
+
 # Install the GeoIPLite Database
 RUN cd /tmp \
-  && mkdir -p /usr/share/GeoIP/ \
+  && mkdir -p /usr/share/GeoIP \
   && wget ${GITHUB_CITY} \
   && tar xzvf GeoLite2-City.tar.gz \
-  && mv GeoLite2-City*/GeoLite2-City.mmdb /usr/share/GeoIP/ \
-  && wget ${GITHUB_CNTRY} \
-  && tar xzvf GeoLite2-Country.tar.gz \
-  && mv GeoLite2-Country*/GeoLite2-Country.mmdb /usr/share/GeoIP/
+  && mv GeoLite2-City*/GeoLite2-City.mmdb /usr/share/GeoIP/
+  # && wget ${GITHUB_CNTRY} \
+  # && tar xzvf GeoLite2-Country.tar.gz \
+  # && mv GeoLite2-Country*/GeoLite2-Country.mmdb /usr/share/GeoIP/
 ####################################################################################################
 FROM alpine:3.8
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap geoip libgcc fts libc6-compat libmaxminddb
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libgcc fts libc6-compat libmaxminddb
 
 COPY --from=builder /usr/local/bro /usr/local/bro
 COPY local.bro /usr/local/bro/share/bro/site/local.zeek
