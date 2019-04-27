@@ -61,6 +61,7 @@ geoipInfo(){
     ]
   }
   '
+  echo "\n\t* Done."
 }
 # Wait for elasticsearch to start. It requires that the status be either
 # green or yellow.

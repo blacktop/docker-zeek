@@ -30,15 +30,10 @@ test: start_elasticsearch start_kibana
 	# @http localhost:9200/_cat/indices
 	# @open -a Safari https://goo.gl/e5v7Qr
 	@docker run --rm $(ORG)/$(NAME):$(BUILD) --version
-	@docker run --rm -v `pwd`/pcap:/pcap $(ORG)/$(NAME):$(BUILD) -r smallFlows.pcap local "Site::local_nets += { 192.168.5.0/24, 10.0.2.0/24 }"
+	@docker run --rm -v `pwd`/pcap:/pcap $(ORG)/$(NAME):$(BUILD) -r smallFlows.pcap local file-extraction/plugins/extract-all-files.bro "Site::local_nets += { 192.168.5.0/24, 10.0.2.0/24 }"
 	@cat pcap/json_streaming_notice.1.log | jq .note
 else ifeq ($(BUILD),kafka)
 	@tests/kafka.sh
-else ifeq ($(BUILD),redis)
-	@docker-compose -f docker-compose.redis.yml up -d logstash
-	@docker-compose -f docker-compose.elastic.yml up bro
-	@http localhost:9200/_cat/indices
-	@open -a Safari https://goo.gl/e5v7Qr
 else
 	@docker run --rm $(ORG)/$(NAME):$(BUILD) --version
 	@docker run --rm -v `pwd`/pcap:/pcap -v `pwd`/scripts/local.bro:/usr/local/bro/share/bro/site/local.bro $(ORG)/$(NAME):$(BUILD) -r heartbleed.pcap local "Site::local_nets += { 192.168.5.0/24 10.0.2.0/24 }"
