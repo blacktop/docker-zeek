@@ -41,6 +41,7 @@ output.elasticsearch:
   hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
   username: '${ELASTICSEARCH_USERNAME:}'
   password: '${ELASTICSEARCH_PASSWORD:}'
+  pipeline: geoip-info
 
 setup.kibana:
   host: '${KIBANA_HOST:kibana:5601}'

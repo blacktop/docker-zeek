@@ -2,6 +2,66 @@
 
 set -euo pipefail
 
+geoipInfo(){
+  ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOSTS:-elasticsearch:9200}
+  echo "Adding geoip-info pipeline..."
+  curl -X PUT "${ELASTICSEARCH_HOSTS}/_ingest/pipeline/geoip-info" -H 'Content-Type: application/json' -d'
+  {
+    "description": "Add geoip info",
+    "processors": [
+      {
+        "geoip": {
+          "field": "client.ip",
+          "target_field": "client.geo",
+          "ignore_missing": true
+        }
+      },
+      {
+        "geoip": {
+          "field": "source.ip",
+          "target_field": "source.geo",
+          "ignore_missing": true
+        }
+      },
+      {
+        "geoip": {
+          "field": "id.orig_h",
+          "target_field": "source.geo",
+          "ignore_missing": true
+        }
+      },
+      {
+        "geoip": {
+          "field": "destination.ip",
+          "target_field": "destination.geo",
+          "ignore_missing": true
+        }
+      },
+      {
+        "geoip": {
+          "field": "id.resp_h",
+          "target_field": "destination.geo",
+          "ignore_missing": true
+        }
+      },
+      {
+        "geoip": {
+          "field": "server.ip",
+          "target_field": "server.geo",
+          "ignore_missing": true
+        }
+      },
+      {
+        "geoip": {
+          "field": "host.ip",
+          "target_field": "host.geo",
+          "ignore_missing": true
+        }
+      }
+    ]
+  }
+  '
+}
 # Wait for elasticsearch to start. It requires that the status be either
 # green or yellow.
 waitForElasticsearch() {
@@ -57,6 +117,7 @@ startFilebeat() {
 
 if [[ -z $1 ]] || [[ ${1:0:1} == '-' ]] ; then
   waitForElasticsearch
+  geoipInfo
   waitFor ${KIBANA_HOST:-kibana:5601} Kibana
   startFilebeat
   cd /pcap
