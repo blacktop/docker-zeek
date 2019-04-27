@@ -39,10 +39,10 @@ RUN echo "===> Compiling zeek..." \
   && make install
 
 RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
-  && cd /tmp/zeek/aux/plugins \
+  && cd /tmp/zeek/aux/ \
   && git clone https://github.com/apache/metron-bro-plugin-kafka.git \
   && apk add --no-cache librdkafka-dev \
-  && cd /tmp/zeek/aux/plugins/metron-bro-plugin-kafka \
+  && cd /tmp/zeek/aux/metron-bro-plugin-kafka \
   && find . -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
   && CC=clang ./configure --bro-dist=/tmp/zeek \
   && make \
