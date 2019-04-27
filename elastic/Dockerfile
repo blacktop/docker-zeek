@@ -69,6 +69,19 @@ COPY config /usr/share/filebeat
 ####################################################################################################
 FROM alpine:3.8
 
+# Install the GeoIPLite Database
+RUN apk add --no-cache curl \
+  && /tmp \
+  && mkdir -p /usr/share/GeoIP/ \
+  && wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz \
+  && tar xzvf GeoLite2-City.tar.gz \
+  && mv GeoLite2-City/GeoLite2-City.mmdb /usr/share/GeoIP/ \
+  && wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz \
+  && tar xzvf GeoLite2-Country.tar.gz \
+  && mv GeoLite2-Country/GeoLite2-Country.mmdb /usr/share/GeoIP/
+####################################################################################################
+FROM alpine:3.8
+
 LABEL maintainer "https://github.com/blacktop"
 
 RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap geoip libgcc fts libc6-compat libmaxminddb
@@ -89,6 +102,5 @@ COPY --from=geoip /usr/share/GeoIP /usr/share/GeoIP
 COPY entrypoint.sh /usr/local/bin/entrypoint
 RUN chmod +x /usr/local/bin/entrypoint
 
-ENTRYPOINT ["/usr/local/bin/entrypoint"]
+ENTRYPOINT ["entrypoint"]
 CMD ["-h"]
-# CMD ["./filebeat", "-e", "-c", "/usr/share/filebeat/config/filebeat.yml"]
