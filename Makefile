@@ -58,7 +58,8 @@ ssh: clean_pcap ## SSH into docker image
 ifeq ($(BUILD),elastic)
 	@docker-compose -f docker-compose.elastic.yml up -d kibana
 	@wait-for-es
-	@docker run --init -it --rm --link docker-zeek_elasticsearch_1:elasticsearch --link docker-zeek_kibana_1:kibana -v `pwd`/pcap:/pcap -e ELASTICSEARCH_USERNAME=elastic -e ELASTICSEARCH_PASSWORD=password --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
+	@docker-compose -f docker-compose.elastic.yml up -d filebeat
+	@docker run --init -it --rm -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
 else
 	@docker run --rm -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
 endif

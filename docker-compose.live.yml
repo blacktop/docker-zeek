@@ -38,9 +38,10 @@ services:
     image: blacktop/zeek:elastic
     volumes:
       - ./pcap:/pcap
-    networks:
-      - elastinet
-    command: -F -r smallFlows.pcap local file-extraction/plugins/extract-all-files.bro "Site::local_nets += { 192.168.5.0/24, 10.0.2.0/24 }"
+    cap_add:
+      - ALL
+    network_mode: "host"
+    command: -i eth0 local
 
 networks:
   elastinet:
