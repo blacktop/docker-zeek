@@ -91,7 +91,7 @@ RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libgcc fts
 
 COPY --from=builder /usr/local/bro /usr/local/bro
 COPY local.bro /usr/local/bro/share/bro/site/local.zeek
-ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/conn-add-geodata.bro /usr/local/share/bro/geodata/conn-add-geodata.bro
+ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/conn-add-geodata.bro /usr/local/bro/share/bro/site/geodata/conn-add-geodata.bro
 
 WORKDIR /pcap
 

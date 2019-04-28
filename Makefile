@@ -30,13 +30,13 @@ test: start_elasticsearch start_kibana
 	# @http localhost:9200/_cat/indices
 	# @open -a Safari https://goo.gl/e5v7Qr
 	@docker run --rm $(ORG)/$(NAME):$(BUILD) --version
-	@docker run --rm -v `pwd`/pcap:/pcap $(ORG)/$(NAME):$(BUILD) -r smallFlows.pcap local file-extraction/plugins/extract-all-files.bro "Site::local_nets += { 192.168.5.0/24, 10.0.2.0/24 }"
+	@docker run --rm -v `pwd`/pcap:/pcap -e ELASTICSEARCH_USERNAME=elastic -e ELASTICSEARCH_PASSWORD=password $(ORG)/$(NAME):$(BUILD) -r smallFlows.pcap local file-extraction/plugins/extract-all-files.bro "Site::local_nets += { 192.168.5.0/24, 10.0.2.0/24 }"
 	@cat pcap/json_streaming_notice.1.log | jq .note
 else ifeq ($(BUILD),kafka)
 	@tests/kafka.sh
 else
 	@docker run --rm $(ORG)/$(NAME):$(BUILD) --version
-	@docker run --rm -v `pwd`/pcap:/pcap -v `pwd`/scripts/local.bro:/usr/local/bro/share/bro/site/local.bro $(ORG)/$(NAME):$(BUILD) -r heartbleed.pcap local "Site::local_nets += { 192.168.5.0/24 10.0.2.0/24 }"
+	@docker run --rm -v `pwd`/pcap:/pcap $(ORG)/$(NAME):$(BUILD) -r heartbleed.pcap local "Site::local_nets += { 192.168.11.0/24 }"
 	@cat pcap/notice.log | awk '{ print $$11 }' | tail -n4
 endif
 
@@ -76,7 +76,7 @@ endif
 ssh: ## SSH into docker image
 ifeq ($(BUILD),elastic)
 ssh: start_elasticsearch start_kibana
-	@docker run --init -it --rm --link elasticsearch --link kibana -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
+	@docker run --init -it --rm --link elasticsearch --link kibana -v `pwd`/pcap:/pcap -e ELASTICSEARCH_USERNAME=elastic -e ELASTICSEARCH_PASSWORD=password --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
 else
 	@docker run --rm -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
 endif
@@ -84,6 +84,8 @@ endif
 .PHONY: stop
 stop: ## Kill running docker containers
 	@docker rm -f $(NAME) || true
+	@docker rm -f elasticsearch || true
+	@docker rm -f kibana || true
 
 .PHONY: stop-all
 stop-all: ## Kill ALL running docker containers

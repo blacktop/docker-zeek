@@ -5,7 +5,7 @@ set -euo pipefail
 geoipInfo(){
   ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOSTS:-elasticsearch:9200}
   echo "===> Adding geoip-info pipeline..."
-  curl -X PUT "${ELASTICSEARCH_HOSTS}/_ingest/pipeline/geoip-info" -H 'Content-Type: application/json' -d'
+  curl -s -X PUT "${ELASTICSEARCH_HOSTS}/_ingest/pipeline/geoip-info" -H 'Content-Type: application/json' -d'
   {
     "description": "Add geoip info",
     "processors": [
@@ -61,7 +61,7 @@ geoipInfo(){
     ]
   }
   '
-  echo -e "\n\t* Done."
+  echo -e "\n * Done."
 }
 # Wait for elasticsearch to start. It requires that the status be either
 # green or yellow.
@@ -112,13 +112,15 @@ waitFor() {
 
 startFilebeat() {
     cd /usr/share/filebeat
-    filebeat setup
+    echo "===> Setting up filebeat..."
+    filebeat setup --modules zeek -e -E 'setup.dashboards.enabled=true'
+    echo "===> Starting filebeat..."
     filebeat &
 }
 
 if [[ -z $1 ]] || [[ ${1:0:1} == '-' ]] ; then
   waitForElasticsearch
-  geoipInfo
+  # geoipInfo
   waitFor ${KIBANA_HOST:-kibana:5601} Kibana
   startFilebeat
   cd /pcap

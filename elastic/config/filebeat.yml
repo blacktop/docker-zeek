@@ -16,23 +16,23 @@ filebeat.modules:
   dns:
     enabled: true
     var.paths:
-      - /pcap/*dns*.log
+      - /pcap/dns*.log
   http:
     enabled: true
     var.paths:
-      - /pcap/*http*.log
+      - /pcap/http*.log
   files:
     enabled: true
     var.paths:
-      - /pcap/*files*.log
+      - /pcap/files*.log
   ssl:
     enabled: true
     var.paths:
-      - /pcap/*ssl*.log
+      - /pcap/ssl*.log
   notice:
     enabled: true
     var.paths:
-      - /pcap/*notice*.log
+      - /pcap/notice*.log
 
 processors:
 - add_cloud_metadata: ~
