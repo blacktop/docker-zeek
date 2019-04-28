@@ -53,23 +53,11 @@ RUN echo "===> Installing corelight/json-streaming-logs package..." \
 RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/bro/bin/bro
 ####################################################################################################
-FROM alpine:3.8 as filebeat
-
-ENV BEAT_VERSION 7.0.0
-
-RUN \
-  cd /tmp \
-  && wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${BEAT_VERSION}-linux-x86_64.tar.gz \
-  && tar xzvf filebeat-${BEAT_VERSION}-linux-x86_64.tar.gz \
-  && mv filebeat-${BEAT_VERSION}-linux-x86_64 /usr/share/filebeat \
-  && mkdir /usr/share/filebeat/logs /usr/share/filebeat/data
-
-COPY config /usr/share/filebeat
-####################################################################################################
 FROM alpine:3.8 as geoip
 
 ENV MAXMIND_CITY https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
 ENV MAXMIND_CNTRY https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz
+ENV MAXMIND_ASN http://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz
 ENV GITHUB_CITY https://github.com/blacktop/docker-zeek/raw/master/maxmind/GeoLite2-City.tar.gz
 ENV GITHUB_CNTRY https://github.com/blacktop/docker-zeek/raw/master/maxmind/GeoLite2-Country.tar.gz
 
@@ -79,9 +67,9 @@ RUN cd /tmp \
   && wget ${GITHUB_CITY} \
   && tar xzvf GeoLite2-City.tar.gz \
   && mv GeoLite2-City*/GeoLite2-City.mmdb /usr/share/GeoIP/
-  # && wget ${GITHUB_CNTRY} \
-  # && tar xzvf GeoLite2-Country.tar.gz \
-  # && mv GeoLite2-Country*/GeoLite2-Country.mmdb /usr/share/GeoIP/
+  # && wget ${MAXMIND_ASN} \
+  # && tar xzvf GeoLite2-ASN.tar.gz \
+  # && mv GeoLite2-ASN*/GeoLite2-ASN.mmdb /usr/share/GeoIP/
 ####################################################################################################
 FROM alpine:3.8
 
@@ -99,9 +87,6 @@ ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/log-pa
 ENV BROPATH .:/data/config:/usr/local/bro/share/bro:/usr/local/bro/share/bro/policy:/usr/local/bro/share/bro/site
 ENV PATH $PATH:/usr/local/bro/bin
 
-COPY --from=filebeat /usr/share/filebeat /usr/share/filebeat
-ENV PATH $PATH:/usr/share/filebeat
-
 COPY --from=geoip /usr/share/GeoIP /usr/share/GeoIP
 
 COPY entrypoint.sh /usr/local/bin/entrypoint
@@ -109,5 +94,5 @@ RUN chmod +x /usr/local/bin/entrypoint
 
 WORKDIR /pcap
 
-ENTRYPOINT ["entrypoint"]
+ENTRYPOINT ["bro"]
 CMD ["-h"]

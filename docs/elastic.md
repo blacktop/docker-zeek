@@ -1,12 +1,15 @@
 # Integrate with the Elasticsearch
 
-Download or create a PCAP
+Download or create `your.pcap` in current directory
 
 ```bash
 $ docker run -d --name elasticsearch -p 9200:9200 blacktop/elasticsearch:7.0
 $ docker run -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.0
-$ docker run -it --rm -v `pwd`:/pcap --link elasticsearch --link kibana \
-             blacktop/zeek:elastic -r your.pcap local
+$ docker run --init --rm -it -v `pwd`:/pcap \
+                             --link kibana \
+                             --link elasticsearch \
+                             blacktop/filebeat -e
+$ docker run -it --rm -v `pwd`:/pcap blacktop/zeek:elastic -r your.pcap local
 
 # assuming you are using Docker For Mac.
 $ open http://localhost:5601/app/kibana
@@ -29,6 +32,7 @@ $ cd docker-zeek
 $ docker-compose -f docker-compose.elastic.yml up -d kibana
 # wait a little while for elasticsearch/kibana to start
 $ docker-compose -f docker-compose.elastic.yml up zeek
+# wait a little while for filebeat to consume all the logs
 $ open http://localhost:5601/app/kibana
 ```
 

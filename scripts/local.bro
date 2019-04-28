@@ -20,7 +20,7 @@
 # Detect traceroute being run on the network. This could possibly cause
 # performance trouble when there are a lot of traceroutes on your network.
 # Enable cautiously.
-@load misc/detect-traceroute
+#@load misc/detect-traceroute
 
 # Generate notices when vulnerable versions of software are discovered.
 # The default is to only monitor software found in the address space defined
@@ -99,8 +99,3 @@
 # Uncomment the following line to enable logging of link-layer addresses. Enabling
 # this adds the link-layer address for each connection endpoint to the conn.log file.
 @load policy/protocols/conn/mac-logging
-
-@load packages
-
-# JSON Plugin
-redef JSONStreaming::disable_default_logs = T;

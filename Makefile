@@ -32,7 +32,7 @@ ifeq ($(BUILD),elastic)
 	@cat pcap/notice.log | jq .note
 	# @cat pcap/json_streaming_notice.1.log | jq .note
 else ifeq ($(BUILD),kafka)
-	@tests/kafka.sh
+	@kafka/tests/kafka.sh
 else
 	@docker run --rm $(ORG)/$(NAME):$(BUILD) --version
 	@docker run --rm -v `pwd`/pcap:/pcap $(ORG)/$(NAME):$(BUILD) -r heartbleed.pcap local "Site::local_nets += { 192.168.11.0/24 }"

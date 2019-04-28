@@ -1,5 +1,9 @@
+
 # Ignore .git folder
 .git*
+.gitignore
+
+tests*
 
 build
 extract_files

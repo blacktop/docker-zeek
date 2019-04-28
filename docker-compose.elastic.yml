@@ -4,6 +4,7 @@ services:
     image: blacktop/elasticsearch:7.0
     ports:
       - "9200:9200"
+
   kibana:
     depends_on:
       - elasticsearch
@@ -12,6 +13,18 @@ services:
       - "5601:5601"
     links:
       - elasticsearch
+
+  filebeat:
+    depends_on:
+      - kibana
+    image: blacktop/filebeat:7.0.0
+    links:
+      - kibana
+      - elasticsearch
+    volumes:
+      - ./pcap:/pcap
+    command: -e
+
   bro:
     depends_on:
       - kibana
