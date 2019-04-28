@@ -102,6 +102,8 @@
 
 # Custom conn geoip enrichment
 @load geodata/conn-add-geodata.bro
+# Log all plain-text http/ftp passwords
+@load passwords/log-passwords.bro
 
 @load file-extraction
 

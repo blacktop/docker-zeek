@@ -91,9 +91,10 @@ RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libgcc fts
 
 COPY --from=builder /usr/local/bro /usr/local/bro
 COPY local.bro /usr/local/bro/share/bro/site/local.zeek
-ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/conn-add-geodata.bro /usr/local/bro/share/bro/site/geodata/conn-add-geodata.bro
 
-WORKDIR /pcap
+# Add a few zeek scripts
+ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/conn-add-geodata.bro /usr/local/bro/share/bro/site/geodata/conn-add-geodata.bro
+ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/log-passwords.bro /usr/local/bro/share/bro/site/passwords/log-passwords.bro
 
 ENV BROPATH .:/data/config:/usr/local/bro/share/bro:/usr/local/bro/share/bro/policy:/usr/local/bro/share/bro/site
 ENV PATH $PATH:/usr/local/bro/bin
@@ -105,6 +106,8 @@ COPY --from=geoip /usr/share/GeoIP /usr/share/GeoIP
 
 COPY entrypoint.sh /usr/local/bin/entrypoint
 RUN chmod +x /usr/local/bin/entrypoint
+
+WORKDIR /pcap
 
 ENTRYPOINT ["entrypoint"]
 CMD ["-h"]

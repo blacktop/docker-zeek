@@ -1,0 +1,25 @@
+version: '3'
+services:
+  elasticsearch:
+    image: blacktop/elasticsearch:7.0
+    ports:
+      - "9200:9200"
+  kibana:
+    depends_on:
+      - elasticsearch
+    image: blacktop/kibana:7.0
+    ports:
+      - "5601:5601"
+    links:
+      - elasticsearch
+  bro:
+    depends_on:
+      - kibana
+    build: ./elastic
+    image: blacktop/zeek:elastic
+    links:
+      - kibana
+      - elasticsearch
+    volumes:
+      - ./pcap:/pcap
+    command: -F -r smallFlows.pcap local file-extraction/plugins/extract-all-files.bro "Site::local_nets += { 192.168.5.0/24, 10.0.2.0/24 }"

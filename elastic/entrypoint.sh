@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -euo pipefail
+set -e
 
 geoipInfo(){
   ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOSTS:-elasticsearch:9200}
