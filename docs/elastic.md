@@ -31,6 +31,7 @@ $ git clone --depth 1 https://github.com/blacktop/docker-zeek.git
 $ cd docker-zeek
 $ docker-compose -f docker-compose.elastic.yml up -d kibana
 # wait a little while for elasticsearch/kibana to start
+$ docker-compose -f docker-compose.elastic.yml up -d filebeat
 $ docker-compose -f docker-compose.elastic.yml up zeek
 # wait a little while for filebeat to consume all the logs
 $ open http://localhost:5601/app/kibana
