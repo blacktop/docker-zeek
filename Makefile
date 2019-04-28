@@ -22,9 +22,8 @@ endif
 tags:
 	docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" $(ORG)/$(NAME)
 
-test: ## Test docker image
+test: clean_pcap ## Test docker image
 ifeq ($(BUILD),elastic)
-# test: start_elasticsearch start_kibana
 	@docker-compose -f docker-compose.elastic.yml up -d kibana
 	@wait-for-es
 	@docker-compose -f docker-compose.elastic.yml up bro
@@ -53,30 +52,12 @@ push: build ## Push docker image to docker registry
 run: stop ## Run docker container
 	@docker run --init -d --name $(NAME) -p 9200:9200 $(ORG)/$(NAME):$(BUILD)
 
-# .PHONY: start_elasticsearch
-# start_elasticsearch:
-# ifeq ("$(shell docker inspect -f {{.State.Running}} elasticsearch)", "true")
-# 	@echo "===> elasticsearch already running.  Stopping now..."
-# 	@docker rm -f elasticsearch || true
-# endif
-# 	@echo "===> Starting elasticsearch"
-# 	@docker run --init -d --name elasticsearch -p 9200:9200 malice/elasticsearch:7.0
-# 	@wait-for-es
-
-# .PHONY: start_kibana
-# start_kibana:
-# ifeq ("$(shell docker inspect -f {{.State.Running}} kibana)", "true")
-# 	@echo "===> kibana already running.  Stopping now..."
-# 	@docker rm -f kibana || true
-# endif
-# 	@echo "===> Starting kibana"
-# 	@docker run --init -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.0
-
 .PHONY: ssh
-ssh: ## SSH into docker image
+ssh: clean_pcap ## SSH into docker image
 ifeq ($(BUILD),elastic)
-# ssh: start_elasticsearch start_kibana
-	@docker run --init -it --rm --link elasticsearch --link kibana -v `pwd`/pcap:/pcap -e ELASTICSEARCH_USERNAME=elastic -e ELASTICSEARCH_PASSWORD=password --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
+	@docker-compose -f docker-compose.elastic.yml up -d kibana
+	@wait-for-es
+	@docker run --init -it --rm --link docker-zeek_elasticsearch_1:elasticsearch --link docker-zeek_kibana_1:kibana -v `pwd`/pcap:/pcap -e ELASTICSEARCH_USERNAME=elastic -e ELASTICSEARCH_PASSWORD=password --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
 else
 	@docker run --rm -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
 endif
@@ -91,22 +72,15 @@ stop: ## Kill running docker containers
 stop-all: ## Kill ALL running docker containers
 	@docker-clean stop
 
-.PHONY: circle
-circle: ci-size ## Get docker image size from CircleCI
-	@sed -i.bu 's/docker%20image-.*-blue/docker%20image-$(shell cat .circleci/SIZE)-blue/' README.md
-	@echo "===> Image size is: $(shell cat .circleci/SIZE)"
-
-ci-build:
-	@echo "===> Getting CircleCI build number"
-	@http https://circleci.com/api/v1.1/project/github/${REPO} | jq '.[0].build_num' > .circleci/build_num
-
-ci-size: ci-build
-	@echo "===> Getting image build size from CircleCI"
-	@http "$(shell http https://circleci.com/api/v1.1/project/github/${REPO}/$(shell cat .circleci/build_num)/artifacts circle-token==${CIRCLE_TOKEN} | jq '.[].url')" > .circleci/SIZE
-
 clean: ## Clean docker image and stop all running containers
 	docker-clean stop
 	docker rmi $(ORG)/$(NAME):$(BUILD) || true
+
+.PHONY: clean_pcap
+clean_pcap:
+	@rm pcap/*.log || true
+	@rm -rf pcap/.state || true
+	@rm -rf pcap/extract_files || true
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help:

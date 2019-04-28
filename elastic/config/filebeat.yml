@@ -34,8 +34,8 @@ filebeat.modules:
     var.paths:
       - /pcap/notice*.log
 
-processors:
-- add_cloud_metadata: ~
+# processors:
+# - add_cloud_metadata: ~
 
 output.elasticsearch:
   hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
