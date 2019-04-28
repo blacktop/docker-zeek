@@ -89,9 +89,6 @@ ENV PATH $PATH:/usr/local/bro/bin
 
 COPY --from=geoip /usr/share/GeoIP /usr/share/GeoIP
 
-COPY entrypoint.sh /usr/local/bin/entrypoint
-RUN chmod +x /usr/local/bin/entrypoint
-
 WORKDIR /pcap
 
 ENTRYPOINT ["bro"]

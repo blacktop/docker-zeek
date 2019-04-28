@@ -22,11 +22,12 @@ endif
 tags:
 	docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" $(ORG)/$(NAME)
 
-test: clean_pcap ## Test docker image
+test: stop clean_pcap ## Test docker image
 ifeq ($(BUILD),elastic)
 	@docker-compose -f docker-compose.elastic.yml up -d kibana
 	@wait-for-es
-	@docker-compose -f docker-compose.elastic.yml up bro
+	@docker-compose -f docker-compose.elastic.yml up -d filebeat
+	@docker-compose -f docker-compose.elastic.yml up zeek
 	@http localhost:9200/_cat/indices
 	@open -a Safari http://localhost:5601
 	@cat pcap/notice.log | jq .note
@@ -64,9 +65,14 @@ endif
 
 .PHONY: stop
 stop: ## Kill running docker containers
+ifeq ($(BUILD),elastic)
+	@docker-compose -f docker-compose.elastic.yml stop
+	@docker-compose -f docker-compose.elastic.yml rm --force
+else
 	@docker rm -f $(NAME) || true
 	@docker rm -f elasticsearch || true
 	@docker rm -f kibana || true
+endif
 
 .PHONY: stop-all
 stop-all: ## Kill ALL running docker containers
