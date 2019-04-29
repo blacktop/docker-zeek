@@ -43,7 +43,7 @@ RUN echo "===> Compiling af_packet plugin..." \
   && git clone https://github.com/J-Gras/bro-af_packet-plugin.git \
   && cd /tmp/zeek/aux/bro-af_packet-plugin \
   && find . -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
-  && CC=clang ./configure --with-kernel=/usr \
+  && CC=clang ./configure --with-kernel=/usr --bro-dist=/tmp/zeek \
   && make -j `nproc` \
   && make install \
   && /usr/local/bro/bin/bro -NN Bro::AF_Packet
