@@ -33,9 +33,7 @@ RUN echo "===> Compiling zeek..." \
   && cd /tmp/zeek \
   && CC=clang ./configure --prefix=/usr/local/bro \
   --disable-broker-tests \
-  --disable-broctl \
   --disable-auxtools \
-  --disable-python \
   && make -j `nproc` \
   && make install
 
@@ -65,7 +63,7 @@ FROM alpine:3.8
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts python
 
 COPY --from=builder /usr/local/bro /usr/local/bro
 COPY local.bro /usr/local/share/bro/site/local.zeek
