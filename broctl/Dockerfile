@@ -4,12 +4,12 @@ LABEL maintainer "https://github.com/blacktop"
 
 ENV ZEEK_VERSION 2.6.1
 
-RUN apk add --no-cache zlib openssl libstdc++ libpcap libgcc
-RUN apk add --no-cache -t .build-deps \
+RUN apk add --no-cache zlib openssl libstdc++ libpcap libgcc \
   libmaxminddb-dev \
   linux-headers \
   openssl-dev \
   libpcap-dev \
+  # rocksdb-dev \
   python-dev \
   zlib-dev \
   binutils \
@@ -17,6 +17,8 @@ RUN apk add --no-cache -t .build-deps \
   cmake \
   clang \
   bison \
+  bash \
+  swig \
   perl \
   make \
   flex \
@@ -32,9 +34,10 @@ RUN echo "===> Cloning zeek..." \
 RUN echo "===> Compiling zeek..." \
   && cd /tmp/zeek \
   && CC=clang ./configure --prefix=/usr/local/bro \
+  --build-type=Release \
   --disable-broker-tests \
   --disable-auxtools \
-  && make -j `nproc` \
+  && make -j 2 \
   && make install
 
 RUN echo "===> Compiling af_packet plugin..." \
@@ -43,7 +46,7 @@ RUN echo "===> Compiling af_packet plugin..." \
   && cd /tmp/zeek/aux/bro-af_packet-plugin \
   && find . -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
   && CC=clang ./configure --with-kernel=/usr --bro-dist=/tmp/zeek \
-  && make -j `nproc` \
+  && make -j 2 \
   && make install \
   && /usr/local/bro/bin/bro -NN Bro::AF_Packet
 
@@ -63,7 +66,7 @@ FROM alpine:3.8
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts python
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts python bash
 
 COPY --from=builder /usr/local/bro /usr/local/bro
 COPY local.bro /usr/local/share/bro/site/local.zeek
