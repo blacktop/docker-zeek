@@ -34,7 +34,7 @@ blacktop/zeek        latest       40.1MB
 blacktop/zeek        2.6          40.1MB
 blacktop/zeek        elastic      101MB
 blacktop/zeek        kafka        43.4MB
-blacktop/zeek        broctl       212MB
+blacktop/zeek        broctl       84MB
 ```
 
 ## Installation
