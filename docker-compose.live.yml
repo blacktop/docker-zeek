@@ -41,7 +41,7 @@ services:
     cap_add:
       - NET_RAW
     network_mode: "host"
-    command: -i eth0 local
+    command: -i af_packet::eth0 local
 
 networks:
   elastinet:

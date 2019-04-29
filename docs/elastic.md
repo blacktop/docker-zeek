@@ -49,10 +49,8 @@ $ docker run --init --rm -it -v `pwd`:/pcap \
                              --link elasticsearch \
                              blacktop/filebeat -e
 # change eth0 to your desired interface
-$ docker run --rm --cap-add=NET_RAW --net=host -v `pwd`:/pcap:rw blacktop/zeek:elastic -i eth0 local file-extraction/plugins/extract-all-files.bro
+$ docker run --rm --cap-add=NET_RAW --net=host -v `pwd`:/pcap:rw blacktop/zeek:elastic -i af_packet::eth0 local
 ```
-
-> **NOTE:** We have enabled a script to download ALL files *(which could get pretty big depending on what network you run this on :wink:)*
 
 Open [http://localhost:5601](http://localhost:5601)
 

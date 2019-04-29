@@ -38,6 +38,16 @@ RUN echo "===> Compiling zeek..." \
   && make -j `nproc` \
   && make install
 
+RUN echo "===> Compiling af_packet plugin..." \
+  && cd /tmp/zeek/aux/ \
+  && git clone https://github.com/J-Gras/bro-af_packet-plugin.git \
+  && cd /tmp/zeek/aux/bro-af_packet-plugin \
+  && find . -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
+  && CC=clang ./configure --with-kernel=/usr \
+  && make -j `nproc` \
+  && make install \
+  && /usr/local/bro/bin/bro -NN Bro::AF_Packet
+
 RUN echo "===> Installing hosom/file-extraction package..." \
   && cd /tmp \
   && git clone https://github.com/hosom/file-extraction.git \
@@ -75,7 +85,7 @@ FROM alpine:3.8
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libgcc fts libc6-compat libmaxminddb
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libgcc fts libmaxminddb
 
 COPY --from=builder /usr/local/bro /usr/local/bro
 COPY local.bro /usr/local/bro/share/bro/site/local.zeek

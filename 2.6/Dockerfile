@@ -4,13 +4,13 @@ LABEL maintainer "https://github.com/blacktop"
 
 ENV ZEEK_VERSION 2.6.1
 
-RUN apk add --no-cache zlib openssl libstdc++ libpcap geoip libgcc tini
+RUN apk add --no-cache zlib openssl libstdc++ libpcap libgcc
 RUN apk add --no-cache -t .build-deps \
+  libmaxminddb-dev \
   linux-headers \
   openssl-dev \
   libpcap-dev \
   python-dev \
-  geoip-dev \
   zlib-dev \
   binutils \
   fts-dev \
@@ -38,27 +38,40 @@ RUN echo "===> Compiling zeek..." \
   && make -j `nproc` \
   && make install
 
-# RUN echo "===> Compiling af_packet plugin..." \
-#   && cd /tmp/zeek/aux/plugins \
-#   && git clone https://github.com/J-Gras/bro-af_packet-plugin \
-#   && cd /tmp/zeek/aux/plugins/bro-af_packet-plugin \
-#   && make distclean \
-#   && CC=clang ./configure --with-kernel=/usr \
-#   && make \
-#   && make install
+RUN echo "===> Compiling af_packet plugin..." \
+  && cd /tmp/zeek/aux/ \
+  && git clone https://github.com/J-Gras/bro-af_packet-plugin.git \
+  && cd /tmp/zeek/aux/bro-af_packet-plugin \
+  && find . -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
+  && CC=clang ./configure --with-kernel=/usr --bro-dist=/tmp/zeek \
+  && make -j `nproc` \
+  && make install \
+  && /usr/local/bro/bin/bro -NN Bro::AF_Packet
+
+RUN echo "===> Installing hosom/file-extraction package..." \
+  && cd /tmp \
+  && git clone https://github.com/hosom/file-extraction.git \
+  && find file-extraction -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
+  && mv file-extraction/scripts /usr/local/bro/share/bro/site/file-extraction
 
 RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/bro/bin/bro
 
+RUN echo "===> Size of the Zeek install..." \
+  && du -sh /usr/local/bro
 ####################################################################################################
 FROM alpine:3.8
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap geoip libgcc fts
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts
 
 COPY --from=builder /usr/local/bro /usr/local/bro
-COPY local.bro /usr/local/share/bro/site/local.bro
+COPY local.bro /usr/local/share/bro/site/local.zeek
+
+# Add a few zeek scripts
+ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/conn-add-geodata.bro /usr/local/bro/share/bro/site/geodata/conn-add-geodata.zeek
+ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/log-passwords.bro /usr/local/bro/share/bro/site/passwords/log-passwords.zeek
 
 WORKDIR /pcap
 
