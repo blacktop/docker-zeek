@@ -39,7 +39,7 @@ services:
     volumes:
       - ./pcap:/pcap
     cap_add:
-      - ALL
+      - NET_RAW
     network_mode: "host"
     command: -i eth0 local
 
