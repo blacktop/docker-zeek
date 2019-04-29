@@ -25,7 +25,7 @@ tags:
 test: stop clean_pcap ## Test docker image
 ifeq ($(BUILD),elastic)
 	@docker-compose -f docker-compose.elastic.yml up -d kibana
-	@wait-for-es
+	@wait-for-es -V -H
 	@docker-compose -f docker-compose.elastic.yml up -d filebeat
 	@docker-compose -f docker-compose.elastic.yml up zeek
 	@http localhost:9200/_cat/indices
@@ -57,7 +57,7 @@ run: stop ## Run docker container
 ssh: clean_pcap ## SSH into docker image
 ifeq ($(BUILD),elastic)
 	@docker-compose -f docker-compose.elastic.yml up -d kibana
-	@wait-for-es
+	@wait-for-es -V -H
 	@docker-compose -f docker-compose.elastic.yml up -d filebeat
 	@docker run --init -it --rm -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
 else
