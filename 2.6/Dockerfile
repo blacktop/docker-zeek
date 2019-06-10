@@ -35,7 +35,7 @@ RUN echo "===> Compiling zeek..." \
   && CC=clang ./configure --prefix=/usr/local/bro \
   --build-type=MinSizeRel \
   --disable-broker-tests \
-  --disable-broctl \
+  --disable-zeekctl \
   --disable-auxtools \
   --disable-python \
   && make -j 2 \
