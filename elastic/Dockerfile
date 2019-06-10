@@ -17,6 +17,7 @@ RUN apk add --no-cache -t .build-deps \
   cmake \
   clang \
   bison \
+  bash \
   swig \
   perl \
   make \
