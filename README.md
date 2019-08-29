@@ -46,10 +46,10 @@ blacktop/zeek        zeekctl      84MB
 
 ```bash
 $ wget https://github.com/blacktop/docker-zeek/raw/master/pcap/heartbleed.pcap
-$ wget https://github.com/blacktop/docker-zeek/raw/master/scripts/local.bro
+$ wget https://github.com/blacktop/docker-zeek/raw/master/3.0/local.zeek
 $ docker run --rm \
          -v `pwd`:/pcap \
-         -v `pwd`/local.bro:/usr/local/zeek/share/zeek/site/local.zeek \  # All default modules loaded
+         -v `pwd`/local.zeek:/usr/local/zeek/share/zeek/site/local.zeek \  # All default modules loaded
          blacktop/zeek -r heartbleed.pcap local "Site::local_nets += { 192.168.11.0/24 }"
 ```
 
