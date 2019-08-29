@@ -28,15 +28,14 @@ RUN apk add --no-cache -t .build-deps \
 
 RUN echo "===> Cloning zeek..." \
   && cd /tmp \
-  && git clone --recursive https://github.com/zeek/zeek.git
-# && git clone --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git
+  && git clone --recursive --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git
 
 RUN echo "===> Compiling zeek..." \
   && cd /tmp/zeek \
   && CC=clang ./configure --prefix=/usr/local/bro \
   --build-type=MinSizeRel \
   --disable-broker-tests \
-  --disable-zeekctl \
+  --disable-broctl \
   --disable-auxtools \
   --disable-python \
   && make -j 2 \
