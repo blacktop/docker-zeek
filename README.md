@@ -22,7 +22,7 @@
 
 ## Dependencies
 
-- [alpine:3.8](https://hub.docker.com/_/alpine/)
+- [alpine:3.10](https://hub.docker.com/_/alpine/)
 
 ## Image Tags
 
@@ -35,7 +35,7 @@ blacktop/zeek        3.0          39MB
 blacktop/zeek        2.6          40.1MB
 blacktop/zeek        elastic      101MB
 blacktop/zeek        kafka        43.4MB
-blacktop/zeek        broctl       84MB
+blacktop/zeek        zeekctl      84MB
 ```
 
 ## Installation

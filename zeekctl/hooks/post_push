@@ -4,7 +4,7 @@ set -e
 
 VERSION=$(cat Dockerfile | grep '^ENV ZEEK_VERSION' | cut -d" " -f3)
 IMAGE_TAG=$(cut -d ":" -f 2 <<< "$IMAGE_NAME")
-TAGS=($VERSION 2)
+TAGS=($VERSION 3)
 
 for TAG in "${TAGS[@]}"; do
   echo "===> Tagging $IMAGE_NAME as $DOCKER_REPO:$IMAGE_TAG-$TAG"
