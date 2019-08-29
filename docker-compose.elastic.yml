@@ -1,7 +1,7 @@
 version: '3'
 services:
   elasticsearch:
-    image: blacktop/elasticsearch:7.0
+    image: blacktop/elasticsearch:7.3.1
     ports:
       - "9200:9200"
     networks:
@@ -10,7 +10,7 @@ services:
   kibana:
     depends_on:
       - elasticsearch
-    image: blacktop/kibana:7.0
+    image: blacktop/kibana:7.3.1
     ports:
       - "5601:5601"
     links:
@@ -21,7 +21,7 @@ services:
   filebeat:
     depends_on:
       - kibana
-    image: blacktop/filebeat:7.0.0
+    image: blacktop/filebeat:7.3.1
     links:
       - kibana
       - elasticsearch

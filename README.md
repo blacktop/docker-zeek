@@ -33,7 +33,7 @@ REPOSITORY           TAG          SIZE
 blacktop/zeek        latest       39MB
 blacktop/zeek        3.0          39MB
 blacktop/zeek        2.6          40.1MB
-blacktop/zeek        elastic      101MB
+blacktop/zeek        elastic      100MB
 blacktop/zeek        kafka        43.4MB
 blacktop/zeek        zeekctl      84MB
 ```
