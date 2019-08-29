@@ -32,7 +32,6 @@ $ docker images
 REPOSITORY           TAG          SIZE
 blacktop/zeek        latest       39MB
 blacktop/zeek        3.0          39MB
-blacktop/zeek        2.6          40.1MB
 blacktop/zeek        elastic      100MB
 blacktop/zeek        kafka        43.4MB
 blacktop/zeek        zeekctl      84MB
@@ -87,16 +86,6 @@ Heartbleed::SSL_Heartbeat_Attack_Success
 ## Issues
 
 Find a bug? Want more features? Find something missing in the documentation? Let me know! Please don't hesitate to [file an issue](https://github.com/blacktop/docker-zeek/issues/new) and I'll get right on it.
-
-## CHANGELOG
-
-See [`CHANGELOG.md`](https://github.com/blacktop/docker-zeek/blob/master/CHANGELOG.md)
-
-## Contributing
-
-[See all contributors on GitHub](https://github.com/blacktop/docker-zeek/graphs/contributors).
-
-Please update the [CHANGELOG.md](https://github.com/blacktop/docker-zeek/blob/master/CHANGELOG.md) and submit a [Pull Request on GitHub](https://help.github.com/articles/using-pull-requests/).
 
 ## License
 

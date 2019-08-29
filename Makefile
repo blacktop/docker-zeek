@@ -54,14 +54,14 @@ run: stop ## Run docker container
 	@docker run --init -d --name $(NAME) -p 9200:9200 $(ORG)/$(NAME):$(BUILD)
 
 .PHONY: ssh
-ssh: clean_pcap ## SSH into docker image
+ssh: stop clean_pcap ## SSH into docker image
 ifeq ($(BUILD),elastic)
 	@docker-compose -f docker-compose.elastic.yml up -d kibana
 	@wait-for-es -V -H
 	@docker-compose -f docker-compose.elastic.yml up -d filebeat
 	@docker run --init -it --rm -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
 else
-	@docker run --rm -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
+	@docker run --init -it --rm -v `pwd`/pcap:/pcap --entrypoint=sh $(ORG)/$(NAME):$(BUILD)
 endif
 
 .PHONY: stop
