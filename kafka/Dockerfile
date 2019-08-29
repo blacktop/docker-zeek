@@ -1,8 +1,8 @@
-FROM alpine:3.8 as builder
+FROM alpine:3.10 as builder
 
 LABEL maintainer "https://github.com/blacktop"
 
-ENV ZEEK_VERSION 2.6.1
+ENV ZEEK_VERSION 3.0.0-rc2
 
 RUN apk add --no-cache zlib openssl libstdc++ libpcap libgcc
 RUN apk add --no-cache -t .build-deps \
@@ -28,12 +28,11 @@ RUN apk add --no-cache -t .build-deps \
 
 RUN echo "===> Cloning zeek..." \
   && cd /tmp \
-  && git clone --recursive https://github.com/zeek/zeek.git
-# && git clone --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git
+  && git clone --recursive --branch v$ZEEK_VERSION https://github.com/zeek/zeek.git
 
 RUN echo "===> Compiling zeek..." \
   && cd /tmp/zeek \
-  && CC=clang ./configure --prefix=/usr/local/bro \
+  && CC=clang ./configure --prefix=/usr/local/zeek \
   --build-type=MinSizeRel \
   --disable-broker-tests \
   --disable-zeekctl \
@@ -50,7 +49,13 @@ RUN echo "===> Compiling af_packet plugin..." \
   && CC=clang ./configure --with-kernel=/usr --bro-dist=/tmp/zeek \
   && make -j 2 \
   && make install \
-  && /usr/local/bro/bin/bro -NN Bro::AF_Packet
+  && /usr/local/zeek/bin/zeek -NN Bro::AF_Packet
+
+RUN echo "===> Installing hosom/file-extraction package..." \
+  && cd /tmp \
+  && git clone https://github.com/hosom/file-extraction.git \
+  && find file-extraction -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
+  && mv file-extraction/scripts /usr/local/zeek/share/zeek/site/file-extraction
 
 RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
   && cd /tmp/zeek/aux/ \
@@ -65,22 +70,30 @@ RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
 RUN echo "===> Check if kafka plugin installed..." && /usr/local/bro/bin/bro -N Apache::Kafka
 
 RUN echo "===> Shrinking image..." \
-  && strip -s /usr/local/bro/bin/bro
+  && strip -s /usr/local/zeek/bin/zeek
 
+RUN echo "===> Size of the Zeek install..." \
+  && du -sh /usr/local/zeek
 ####################################################################################################
-FROM alpine:3.8
+FROM alpine:3.10
 
 LABEL maintainer "https://github.com/blacktop"
 
 RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts librdkafka
 
-COPY --from=builder /usr/local/bro /usr/local/bro
-COPY local.bro /usr/local/bro/share/bro/site/local.zeek
+COPY --from=builder /usr/local/zeek /usr/local/zeek
+COPY local.zeek /usr/local/share/bro/site/local.zeek
+
+# Add a few zeek scripts
+ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/conn-add-geodata.bro \
+  /usr/local/zeek/share/zeek/site/geodata/conn-add-geodata.zeek
+ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/log-passwords.bro \
+  /usr/local/zeek/share/zeek/site/passwords/log-passwords.zeek
 
 WORKDIR /pcap
 
-ENV BROPATH .:/data/config:/usr/local/bro/share/bro:/usr/local/bro/share/bro/policy:/usr/local/bro/share/bro/site
-ENV PATH $PATH:/usr/local/bro/bin
+ENV ZEEKPATH .:/data/config:/usr/local/zeek/share/zeek:/usr/local/zeek/share/zeek/policy:/usr/local/zeek/share/zeek/site
+ENV PATH $PATH:/usr/local/zeek/bin
 
-ENTRYPOINT ["bro"]
+ENTRYPOINT ["zeek"]
 CMD ["-h"]
