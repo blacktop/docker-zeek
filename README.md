@@ -16,8 +16,6 @@
 - [Getting Started](#getting-started)
 - [Documentation](#documentation)
 - [Issues](#issues)
-- [CHANGELOG](#changelog)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Dependencies
