@@ -67,7 +67,7 @@ RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
   && make -j 2 \
   && make install
 
-RUN echo "===> Check if kafka plugin installed..." && /usr/local/bro/bin/bro -N Apache::Kafka
+RUN echo "===> Check if kafka plugin installed..." && /usr/local/zeek/bin/zeek -N Apache::Kafka
 
 RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/zeek/bin/zeek
