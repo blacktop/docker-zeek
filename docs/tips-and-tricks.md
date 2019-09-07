@@ -28,7 +28,7 @@ bro -r my_capture.pcap local file-extraction/plugins/extract-all-files.zeek
 
 > **NOTE:** We have enabled a script to download ALL files *(which could get pretty big depending on what network you run this on :wink:)*
 
-## Use **blacktop/zeek** like a host binary
+## Use `blacktop/zeek` like a host binary
 
 Add the following to your `bash` or `zsh` profile
 
