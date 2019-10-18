@@ -2,7 +2,7 @@ FROM alpine:3.10 as builder
 
 LABEL maintainer "https://github.com/blacktop"
 
-ENV ZEEK_VERSION 3.0.0-rc2
+ENV ZEEK_VERSION 3.0.0
 
 RUN apk add --no-cache zlib openssl libstdc++ libpcap libgcc
 RUN apk add --no-cache -t .build-deps \
@@ -83,9 +83,9 @@ RUN cd /tmp \
   && wget ${GITHUB_CITY} \
   && tar xzvf GeoLite2-City.tar.gz \
   && mv GeoLite2-City*/GeoLite2-City.mmdb /usr/share/GeoIP/
-  # && wget ${MAXMIND_ASN} \
-  # && tar xzvf GeoLite2-ASN.tar.gz \
-  # && mv GeoLite2-ASN*/GeoLite2-ASN.mmdb /usr/share/GeoIP/
+# && wget ${MAXMIND_ASN} \
+# && tar xzvf GeoLite2-ASN.tar.gz \
+# && mv GeoLite2-ASN*/GeoLite2-ASN.mmdb /usr/share/GeoIP/
 ####################################################################################################
 FROM alpine:3.10
 

@@ -5,8 +5,8 @@
 Download or create `your.pcap` in current directory
 
 ```bash
-$ docker run -d --name elasticsearch -p 9200:9200 blacktop/elasticsearch:7.0
-$ docker run -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.0
+$ docker run -d --name elasticsearch -p 9200:9200 blacktop/elasticsearch:7.4.0
+$ docker run -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.4.0
 $ docker run --init --rm -it -v `pwd`:/pcap \
                              --link kibana \
                              --link elasticsearch \
@@ -42,8 +42,8 @@ $ open http://localhost:5601/app/kibana
 ## Use LIVE Traffic
 
 ```bash
-$ docker run -d --name elasticsearch -p 9200:9200 blacktop/elasticsearch:7.0
-$ docker run -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.0
+$ docker run -d --name elasticsearch -p 9200:9200 blacktop/elasticsearch:7.4.0
+$ docker run -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.4.0
 $ docker run --init --rm -it -v `pwd`:/pcap \
                              --link kibana \
                              --link elasticsearch \
