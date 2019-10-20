@@ -32,7 +32,7 @@ sudo sysctl -w vm.max_map_count=262144
 $ git clone --depth 1 https://github.com/blacktop/docker-zeek.git
 $ cd docker-zeek
 $ docker-compose -f docker-compose.elastic.yml up -d kibana
-# wait a little while for elasticsearch/kibana to start
+# wait a few minutes for "kibana" to start
 $ docker-compose -f docker-compose.elastic.yml up -d filebeat
 $ docker-compose -f docker-compose.elastic.yml up zeek
 # wait a little while for filebeat to consume all the logs
@@ -44,6 +44,7 @@ $ open http://localhost:5601/app/kibana
 ```bash
 $ docker run -d --name elasticsearch -p 9200:9200 blacktop/elasticsearch:7.4.0
 $ docker run -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.4.0
+# wait a few minutes for "kibana" to start
 $ docker run --init --rm -it -v `pwd`:/pcap \
                              --link kibana \
                              --link elasticsearch \

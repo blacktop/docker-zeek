@@ -1,7 +1,9 @@
-version: '3'
+version: "3"
 services:
   elasticsearch:
-    image: blacktop/elasticsearch:7.3.1
+    image: blacktop/elasticsearch:x-pack-7.4.0
+    environment:
+      - discovery.type=single-node
     ports:
       - "9200:9200"
     networks:
@@ -10,7 +12,9 @@ services:
   kibana:
     depends_on:
       - elasticsearch
-    image: blacktop/kibana:7.3.1
+    image: blacktop/kibana:x-pack-7.4.0
+    environment:
+      - xpack.reporting.enabled=false
     ports:
       - "5601:5601"
     links:
@@ -21,7 +25,7 @@ services:
   filebeat:
     depends_on:
       - kibana
-    image: blacktop/filebeat:7.3.1
+    image: blacktop/filebeat:7.4.0
     links:
       - kibana
       - elasticsearch
@@ -43,5 +47,4 @@ services:
     network_mode: "host"
     command: -i af_packet::eth0 local
 
-networks:
-  elastinet:
+networks: elastinet:
