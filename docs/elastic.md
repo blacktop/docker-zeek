@@ -5,8 +5,15 @@
 Download or create `your.pcap` in current directory
 
 ```bash
-$ docker run -d --name elasticsearch -p 9200:9200 -e discovery.type=single-node blacktop/elasticsearch:x-pack-7.4.0
-$ docker run -d --name kibana --link elasticsearch -p 5601:5601 -e xpack.reporting.enabled=false blacktop/kibana:x-pack-7.4.0
+$ docker run -d --name elasticsearch \
+                -p 9200:9200 \
+                -e discovery.type=single-node \
+                blacktop/elasticsearch:x-pack-7.4.0
+$ docker run -d --name kibana \
+                -p 5601:5601 \
+                --link elasticsearch \
+                -e xpack.reporting.enabled=false \
+                blacktop/kibana:x-pack-7.4.0
 $ docker run --init --rm -it -v `pwd`:/pcap \
                              --link kibana \
                              --link elasticsearch \
@@ -42,8 +49,15 @@ $ open http://localhost:5601/app/kibana
 ## Use LIVE Traffic
 
 ```bash
-$ docker run -d --name elasticsearch -p 9200:9200 -e discovery.type=single-node blacktop/elasticsearch:x-pack-7.4.0
-$ docker run -d --name kibana --link elasticsearch -p 5601:5601 -e xpack.reporting.enabled=false blacktop/kibana:x-pack-7.4.0
+$ docker run -d --name elasticsearch \
+                -p 9200:9200 \
+                -e discovery.type=single-node \
+                blacktop/elasticsearch:x-pack-7.4.0
+$ docker run -d --name kibana \
+                -p 5601:5601 \
+                --link elasticsearch \
+                -e xpack.reporting.enabled=false \
+                blacktop/kibana:x-pack-7.4.0
 # wait a few minutes for "kibana" to start
 $ docker run --init --rm -it -v `pwd`:/pcap \
                              --link kibana \
