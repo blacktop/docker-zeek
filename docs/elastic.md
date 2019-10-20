@@ -5,12 +5,12 @@
 Download or create `your.pcap` in current directory
 
 ```bash
-$ docker run -d --name elasticsearch -p 9200:9200 blacktop/elasticsearch:7.4.0
-$ docker run -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.4.0
+$ docker run -d --name elasticsearch -p 9200:9200 -e discovery.type=single-node blacktop/elasticsearch:x-pack-7.4.0
+$ docker run -d --name kibana --link elasticsearch -p 5601:5601 -e xpack.reporting.enabled=false blacktop/kibana:x-pack-7.4.0
 $ docker run --init --rm -it -v `pwd`:/pcap \
                              --link kibana \
                              --link elasticsearch \
-                             blacktop/filebeat -e
+                             blacktop/filebeat:7.4.0 -e
 $ docker run -it --rm -v `pwd`:/pcap blacktop/zeek:elastic -r your.pcap local
 
 # assuming you are using Docker For Mac.
@@ -42,13 +42,13 @@ $ open http://localhost:5601/app/kibana
 ## Use LIVE Traffic
 
 ```bash
-$ docker run -d --name elasticsearch -p 9200:9200 blacktop/elasticsearch:7.4.0
-$ docker run -d --name kibana --link elasticsearch -p 5601:5601 blacktop/kibana:7.4.0
+$ docker run -d --name elasticsearch -p 9200:9200 -e discovery.type=single-node blacktop/elasticsearch:x-pack-7.4.0
+$ docker run -d --name kibana --link elasticsearch -p 5601:5601 -e xpack.reporting.enabled=false blacktop/kibana:x-pack-7.4.0
 # wait a few minutes for "kibana" to start
 $ docker run --init --rm -it -v `pwd`:/pcap \
                              --link kibana \
                              --link elasticsearch \
-                             blacktop/filebeat -e
+                             blacktop/filebeat:7.4.0 -e
 # change eth0 to your desired interface
 $ docker run --rm --cap-add=NET_RAW --net=host -v `pwd`:/pcap:rw blacktop/zeek:elastic -i af_packet::eth0 local
 ```
