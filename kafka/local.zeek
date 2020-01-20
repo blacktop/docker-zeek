@@ -102,7 +102,7 @@
 
 # Kafka Plugin
 @load Apache/Kafka
-redef Kafka::logs_to_send = set(Conn::LOG, HTTP::LOG, SSL::LOG, Files::LOG, DNS::LOG, FTP::LOG, SMTP::LOG, X509::LOG, Notice::LOG);
+redef Kafka::send_all_active_logs = T;
 redef Kafka::kafka_conf = table(
     ["metadata.broker.list"] = "kafka:9092"
 );
