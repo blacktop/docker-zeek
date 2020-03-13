@@ -10,13 +10,14 @@
 
 **Table of Contents**
 
-- [Dependencies](#dependencies)
-- [Image Tags](#image-tags)
-- [Installation](#installation)
-- [Getting Started](#getting-started)
-- [Documentation](#documentation)
-- [Issues](#issues)
-- [License](#license)
+- [docker-zeek](#docker-zeek)
+  - [Dependencies](#dependencies)
+  - [Image Tags](#image-tags)
+  - [Installation](#installation)
+  - [Getting Started](#getting-started)
+  - [Documentation](#documentation)
+  - [Issues](#issues)
+  - [License](#license)
 
 ## Dependencies
 
@@ -29,6 +30,7 @@ $ docker images
 
 REPOSITORY           TAG          SIZE
 blacktop/zeek        latest       39MB
+blacktop/zeek        3.1          39MB
 blacktop/zeek        3.0          39MB
 blacktop/zeek        elastic      101MB
 blacktop/zeek        kafka        46.9MB
@@ -87,4 +89,4 @@ Find a bug? Want more features? Find something missing in the documentation? Let
 
 ## License
 
-MIT Copyright (c) 2018 **blacktop**
+MIT Copyright (c) 2018-2020 **blacktop**

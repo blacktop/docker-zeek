@@ -1,8 +1,8 @@
-FROM alpine:3.10 as builder
+FROM alpine:3.11 as builder
 
 LABEL maintainer "https://github.com/blacktop"
 
-ENV ZEEK_VERSION 3.0.3
+ENV ZEEK_VERSION 3.1.1
 
 RUN apk add --no-cache zlib openssl libstdc++ libpcap libgcc
 RUN apk add --no-cache -t .build-deps \
@@ -63,7 +63,7 @@ RUN echo "===> Shrinking image..." \
 RUN echo "===> Size of the Zeek install..." \
   && du -sh /usr/local/zeek
 ####################################################################################################
-FROM alpine:3.10
+FROM alpine:3.11
 
 LABEL maintainer "https://github.com/blacktop"
 
