@@ -40,7 +40,7 @@ blacktop/zeek        latest       39MB
 blacktop/zeek        3.1          39MB
 blacktop/zeek        3.0          39MB
 blacktop/zeek        elastic      101MB
-blacktop/zeek        kafka        46.9MB
+blacktop/zeek        kafka        47.2MB
 blacktop/zeek        zeekctl      84MB
 ```
 
