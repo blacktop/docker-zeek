@@ -52,7 +52,6 @@ RUN echo "===> Compiling af_packet plugin..." \
 RUN echo "===> Installing hosom/file-extraction package..." \
   && cd /tmp \
   && git clone https://github.com/hosom/file-extraction.git \
-  && find file-extraction -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
   && mv file-extraction/scripts /usr/local/zeek/share/zeek/site/file-extraction
 
 RUN echo "===> Shrinking image..." \
