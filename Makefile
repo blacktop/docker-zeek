@@ -36,7 +36,7 @@ else ifeq ($(BUILD),kafka)
 	@kafka/tests/kafka.sh
 else
 	@docker run --rm $(ORG)/$(NAME):$(BUILD) --version
-	@docker run --rm -v `pwd`/pcap:/pcap $(ORG)/$(NAME):$(BUILD) -r heartbleed.pcap local "Site::local_nets += { 192.168.11.0/24 }"
+	@docker run --rm -v `pwd`/pcap:/pcap $(ORG)/$(NAME):$(BUILD) -F -r smallFlows.pcap local file-extraction/plugins/extract-all-files.zeek "Site::local_nets += { 192.168.5.0/24, 10.0.2.0/24 }"
 	@cat pcap/notice.log | awk '{ print $$11 }' | tail -n4
 endif
 
