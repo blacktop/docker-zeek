@@ -101,9 +101,9 @@
 @load policy/protocols/conn/mac-logging
 
 # Custom conn geoip enrichment
-@load geodata/conn-add-geodata.bro
+@load geodata/conn-add-geodata.zeek
 # Log all plain-text http/ftp passwords
-@load passwords/log-passwords.bro
+@load passwords/log-passwords.zeek
 
 @load file-extraction
 
