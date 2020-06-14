@@ -1,27 +1,26 @@
-![bro-logo](https://github.com/blacktop/docker-zeek/raw/master/docs/logo.png)
+<p align="center">
+  <a href="https://github.com/blacktop/docker-zeek"><img alt="Zeek Logo" src="https://raw.githubusercontent.com/blacktop/docker-zeek/master/docs/logo.png" height="140" /></a>
+  <a href="https://github.com/blacktop/docker-zeek"><h3 align="center">docker-zeek</h3></a>
+  <p align="center"><a href="https://github.com/zeek/zeek">Zeek</a> Network Security Monitor Dockerfile</p>
+</p>
 
-# docker-zeek
-
-[![CircleCI](https://circleci.com/gh/blacktop/docker-zeek.png?style=shield)](https://circleci.com/gh/blacktop/docker-zeek) [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org) [![Docker Stars](https://img.shields.io/docker/stars/blacktop/zeek.svg)](https://hub.docker.com/r/blacktop/zeek/) [![Docker Pulls](https://img.shields.io/docker/pulls/blacktop/zeek.svg)](https://hub.docker.com/r/blacktop/zeek/) [![Docker Image](https://img.shields.io/badge/docker%20image-39.6MB-blue.svg)](https://hub.docker.com/r/blacktop/zeek/)
-
-> [Zeek Network Security Monitor](https://github.com/zeek/zeek) Dockerfile
+[![CircleCI](https://circleci.com/gh/blacktop/docker-zeek.png?style=shield)](https://circleci.com/gh/blacktop/docker-zeek) [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org) [![Docker Stars](https://img.shields.io/docker/stars/blacktop/zeek.svg)](https://hub.docker.com/r/blacktop/zeek/) [![Docker Pulls](https://img.shields.io/docker/pulls/blacktop/zeek.svg)](https://hub.docker.com/r/blacktop/zeek/) [![Docker Image](https://img.shields.io/badge/docker%20image-39.5MB-blue.svg)](https://hub.docker.com/r/blacktop/zeek/)
 
 ---
 
 **Table of Contents**
 
-- [docker-zeek](#docker-zeek)
-  - [Dependencies](#dependencies)
-  - [Image Tags](#image-tags)
-  - [Installation](#installation)
-  - [Getting Started](#getting-started)
-  - [Documentation](#documentation)
-  - [Issues](#issues)
-  - [License](#license)
+- [Dependencies](#dependencies)
+- [Image Tags](#image-tags)
+- [Installation](#installation)
+- [Getting Started](#getting-started)
+- [Documentation](#documentation)
+- [Issues](#issues)
+- [License](#license)
 
 ## Dependencies
 
-- [alpine:3.10](https://hub.docker.com/_/alpine/)
+- [alpine:3.12](https://hub.docker.com/_/alpine/)
 
 ## Image Tags
 

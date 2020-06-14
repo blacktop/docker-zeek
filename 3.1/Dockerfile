@@ -1,8 +1,8 @@
-FROM alpine:3.11 as builder
+FROM alpine:3.12 as builder
 
 LABEL maintainer "https://github.com/blacktop"
 
-ENV ZEEK_VERSION 3.1.1
+ENV ZEEK_VERSION 3.1.4
 
 RUN apk add --no-cache zlib openssl libstdc++ libpcap libgcc
 RUN apk add --no-cache -t .build-deps \
@@ -11,7 +11,7 @@ RUN apk add --no-cache -t .build-deps \
   linux-headers \
   openssl-dev \
   libpcap-dev \
-  python-dev \
+  python3-dev \
   zlib-dev \
   binutils \
   fts-dev \
@@ -53,8 +53,7 @@ RUN echo "===> Compiling af_packet plugin..." \
 
 RUN echo "===> Installing hosom/file-extraction package..." \
   && cd /tmp \
-  && git clone https://github.com/hosom/file-extraction.git \
-  && find file-extraction -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
+  && git clone git://github.com/hosom/file-extraction \
   && mv file-extraction/scripts /usr/local/zeek/share/zeek/site/file-extraction
 
 RUN echo "===> Shrinking image..." \
@@ -63,7 +62,7 @@ RUN echo "===> Shrinking image..." \
 RUN echo "===> Size of the Zeek install..." \
   && du -sh /usr/local/zeek
 ####################################################################################################
-FROM alpine:3.11
+FROM alpine:3.12
 
 LABEL maintainer "https://github.com/blacktop"
 
