@@ -17,6 +17,6 @@ $ docker run --rm -v /path/to/pcap:/pcap:rw blacktop/zeek -r my.pcap local
 ```bash
 $ docker run --rm \
   -v `pwd`:/pcap \
-  -v `pwd`/local.zeek:/usr/local/share/zeek/site/local.zeek \
+  -v `pwd`/local.zeek:/usr/local/zeek/share/zeek/site/local.zeek \
   blacktop/zeek -r my_pcap.pcap local
 ```
