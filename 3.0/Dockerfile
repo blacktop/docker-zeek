@@ -2,7 +2,7 @@ FROM alpine:3.10 as builder
 
 LABEL maintainer "https://github.com/blacktop"
 
-ENV ZEEK_VERSION 3.0.3
+ENV ZEEK_VERSION 3.0.11
 
 RUN apk add --no-cache zlib openssl libstdc++ libpcap libgcc
 RUN apk add --no-cache -t .build-deps \
