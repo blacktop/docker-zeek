@@ -12,7 +12,7 @@
     <a href="https://hub.docker.com/r/blacktop/zeek/" alt="Docker Pulls">
           <img src="https://img.shields.io/docker/pulls/blacktop/zeek.svg" /></a>
     <a href="https://hub.docker.com/r/blacktop/zeek/" alt="Docker Image">
-          <img src="https://img.shields.io/badge/docker%20image-39.5MB-blue.svg" /></a>
+          <img src="https://img.shields.io/badge/docker%20image-41.6MB-blue.svg" /></a>
   </p>
 </p>
 
@@ -36,8 +36,8 @@
 $ docker images
 
 REPOSITORY           TAG          SIZE
-blacktop/zeek        latest       39MB
-blacktop/zeek        3.2          39MB
+blacktop/zeek        latest       41.6MB
+blacktop/zeek        3.2          41.6MB
 blacktop/zeek        3.1          39MB
 blacktop/zeek        3.0          39MB
 blacktop/zeek        elastic      102MB
