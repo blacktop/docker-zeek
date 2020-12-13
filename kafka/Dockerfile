@@ -56,6 +56,16 @@ RUN echo "===> Installing hosom/file-extraction package..." \
   && git clone https://github.com/hosom/file-extraction.git \
   && mv file-extraction/scripts /usr/local/zeek/share/zeek/site/file-extraction
 
+RUN echo "===> Installing Community-Id..." \
+  && cd /tmp \
+  && git clone https://github.com/corelight/zeek-community-id.git \
+  && cd /tmp/zeek-community-id \
+  && CC=clang ./configure --zeek-dist=/tmp/zeek \
+  && cd /tmp/zeek-community-id/build \
+  && make -j 2 \
+  && make install \
+  && /usr/local/zeek/bin/zeek -NN Corelight::CommunityID
+
 RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
   && cd /tmp/zeek/aux/ \
   && apk add --no-cache librdkafka-dev \
