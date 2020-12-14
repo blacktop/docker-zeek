@@ -41,9 +41,9 @@ RUN echo "===> Compiling zeek..." \
   && make install
 
 RUN echo "===> Compiling af_packet plugin..." \
-  && cd /tmp \
+  && cd /tmp/zeek/auxil/ \
   && git clone https://github.com/J-Gras/zeek-af_packet-plugin.git \
-  && cd /tmp/zeek-af_packet-plugin \
+  && cd /tmp/zeek/auxil/zeek-af_packet-plugin \
   && CC=clang ./configure --with-kernel=/usr --zeek-dist=/tmp/zeek \
   && make -j 2 \
   && make install \
