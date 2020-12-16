@@ -2,7 +2,7 @@ FROM alpine:3.12 as builder
 
 LABEL maintainer "https://github.com/blacktop"
 
-ENV ZEEK_VERSION 3.2.3
+ENV ZEEK_VERSION 4.0.0-rc1
 
 RUN apk add --no-cache zlib openssl libstdc++ libpcap libgcc
 RUN apk add --no-cache -t .build-deps \
@@ -34,9 +34,11 @@ RUN echo "===> Cloning zeek..." \
 RUN echo "===> Compiling zeek..." \
   && cd /tmp/zeek \
   && CC=clang ./configure --prefix=/usr/local/zeek \
-  --build-type=Release \
+  --build-type=MinSizeRel \
   --disable-broker-tests \
+  --disable-zeekctl \
   --disable-auxtools \
+  --disable-python \
   && make -j 2 \
   && make install
 
@@ -51,7 +53,7 @@ RUN echo "===> Compiling af_packet plugin..." \
 
 RUN echo "===> Installing hosom/file-extraction package..." \
   && cd /tmp \
-  && git clone https://github.com/hosom/file-extraction.git \
+  && git clone git://github.com/hosom/file-extraction \
   && mv file-extraction/scripts /usr/local/zeek/share/zeek/site/file-extraction
 
 RUN echo "===> Installing Community-Id..." \
@@ -74,7 +76,7 @@ FROM alpine:3.12
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts python3 bash
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts
 
 COPY --from=builder /usr/local/zeek /usr/local/zeek
 COPY local.zeek /usr/local/zeek/share/zeek/site/local.zeek
