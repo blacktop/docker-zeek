@@ -67,10 +67,10 @@ RUN echo "===> Installing Community-Id..." \
   && /usr/local/zeek/bin/zeek -NN Corelight::CommunityID
 
 RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
-  && cd /tmp/zeek/aux/ \
+  && cd /tmp/zeek/auxil/ \
   && apk add --no-cache librdkafka-dev \
   && git clone https://github.com/apache/metron-bro-plugin-kafka.git \
-  && cd /tmp/zeek/aux/metron-bro-plugin-kafka \
+  && cd /tmp/zeek/auxil/metron-bro-plugin-kafka \
   && find . -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
   && sed -i 's/bro/zeek/g' ./configure \
   && ./configure --zeek-dist=/tmp/zeek \
