@@ -1,8 +1,8 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 LABEL maintainer "https://github.com/blacktop"
 
-ENV ZEEK_VERSION 4.0.0-rc1
+ENV ZEEK_VERSION 4.0.0
 
 RUN apk add --no-cache zlib openssl libstdc++ libpcap libgcc
 RUN apk add --no-cache -t .build-deps \

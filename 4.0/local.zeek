@@ -2,6 +2,10 @@
 ##!
 ##! This file will not be overwritten when upgrading or reinstalling!
 
+# Installation-wide salt value that is used in some digest hashes, e.g., for
+# the creation of file IDs. Please change this to a hard to guess value.
+redef digest_salt = "Please change this value.";
+
 # This script logs which scripts were loaded during each run.
 @load misc/loaded-scripts
 
@@ -100,3 +104,6 @@
 # Uncomment the following line to enable logging of link-layer addresses. Enabling
 # this adds the link-layer address for each connection endpoint to the conn.log file.
 # @load policy/protocols/conn/mac-logging
+
+# Uncomment this to source zkg's package state
+# @load packages
