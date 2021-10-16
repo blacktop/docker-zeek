@@ -3,8 +3,8 @@
   <a href="https://github.com/blacktop/docker-zeek"><h3 align="center">docker-zeek</h3></a>
   <p align="center"><a href="https://github.com/zeek/zeek">Zeek</a> Network Security Monitor Dockerfile</p>
     <p align="center">
-    <a href="https://circleci.com/gh/blacktop/docker-zeek" alt="CircleCI">
-          <img src="https://circleci.com/gh/blacktop/docker-zeek.png?style=shield" /></a>
+    <a href="https://github.com/blacktop/docker-zeek/actions/workflows/docker-image.yml" alt="Publish Docker Image">
+          <img src="https://github.com/blacktop/docker-zeek/actions/workflows/docker-image.yml/badge.svg" /></a>
     <a href="http://doge.mit-license.org" alt="License">
           <img src="http://img.shields.io/:license-mit-blue.svg" /></a>
     <a href="https://hub.docker.com/r/blacktop/zeek/" alt="Docker Stars">
