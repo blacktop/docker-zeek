@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.14 as builder
 
 LABEL maintainer "https://github.com/blacktop"
 
@@ -96,7 +96,7 @@ RUN cd /tmp \
 # && tar xzvf GeoLite2-ASN.tar.gz \
 # && mv GeoLite2-ASN*/GeoLite2-ASN.mmdb /usr/share/GeoIP/
 ####################################################################################################
-FROM alpine:3.12
+FROM alpine:3.14
 
 LABEL maintainer "https://github.com/blacktop"
 

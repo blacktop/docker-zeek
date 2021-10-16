@@ -53,7 +53,7 @@ RUN echo "===> Compiling af_packet plugin..." \
 
 RUN echo "===> Installing hosom/file-extraction package..." \
   && cd /tmp \
-  && git clone https://github.com/hosom/file-extraction.git \
+  && git clone git://github.com/hosom/file-extraction \
   && mv file-extraction/scripts /usr/local/zeek/share/zeek/site/file-extraction
 
 RUN echo "===> Installing Community-Id..." \
@@ -66,20 +66,6 @@ RUN echo "===> Installing Community-Id..." \
   && make install \
   && /usr/local/zeek/bin/zeek -NN Corelight::CommunityID
 
-RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
-  && cd /tmp/zeek/auxil/ \
-  && apk add --no-cache librdkafka-dev \
-  && git clone https://github.com/apache/metron-bro-plugin-kafka.git \
-  && cd /tmp/zeek/auxil/metron-bro-plugin-kafka \
-  && find . -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
-  && sed -i 's/bro/zeek/g' ./configure \
-  && ./configure --zeek-dist=/tmp/zeek \
-  && make -j 2 \
-  && make install \
-  && /usr/local/zeek/bin/zeek -N Apache::Kafka
-
-RUN echo "===> Check if kafka plugin installed..." && /usr/local/zeek/bin/zeek -N Apache::Kafka
-
 RUN echo "===> Shrinking image..." \
   && strip -s /usr/local/zeek/bin/zeek
 
@@ -90,7 +76,7 @@ FROM alpine:3.14
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts librdkafka
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts
 
 COPY --from=builder /usr/local/zeek /usr/local/zeek
 COPY local.zeek /usr/local/zeek/share/zeek/site/local.zeek

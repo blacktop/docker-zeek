@@ -28,7 +28,7 @@
 
 ## Dependencies
 
-- [alpine:3.12](https://hub.docker.com/_/alpine/)
+- [alpine:3.14](https://hub.docker.com/_/alpine/)
 
 ## Image Tags
 
@@ -37,6 +37,8 @@ $ docker images
 
 REPOSITORY           TAG          SIZE
 blacktop/zeek        latest       41.6MB
+blacktop/zeek        4.1          41.6MB
+blacktop/zeek        4.0          41.6MB
 blacktop/zeek        3.2          41.6MB
 blacktop/zeek        3.1          39MB
 blacktop/zeek        3.0          39MB
