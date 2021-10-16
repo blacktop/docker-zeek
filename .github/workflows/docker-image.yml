@@ -76,9 +76,14 @@ jobs:
           context: ./4.1
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
+            blacktop/zeek:latest
             blacktop/zeek:4
             blacktop/zeek:4.1
             blacktop/zeek:4.1.1
+            ghcr.io/blacktop/zeek:latest
+            ghcr.io/blacktop/zeek:4
+            ghcr.io/blacktop/zeek:4.1
+            ghcr.io/blacktop/zeek:4.1.1
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Build and push Docker image (elastic)
@@ -89,9 +94,13 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             blacktop/zeek:elastic
-            blacktop/zeek:elastic-4
-            blacktop/zeek:elastic-4.1
-            blacktop/zeek:elastic-4.1.1
+            blacktop/zeek:4-elastic
+            blacktop/zeek:4.1-elastic
+            blacktop/zeek:4.1.1-elastic
+            ghcr.io/blacktop/zeek:elastic
+            ghcr.io/blacktop/zeek:4-elastic
+            ghcr.io/blacktop/zeek:4.1-elastic
+            ghcr.io/blacktop/zeek:4.1.1-elastic
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Build and push Docker image (kafka)
@@ -102,9 +111,13 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             blacktop/zeek:kafka
-            blacktop/zeek:kafka-4
-            blacktop/zeek:kafka-4.1
-            blacktop/zeek:kafka-4.1.1
+            blacktop/zeek:4-kafka
+            blacktop/zeek:4.1-kafka
+            blacktop/zeek:4.1.1-kafka
+            ghcr.io/blacktop/zeek:kafka
+            ghcr.io/blacktop/zeek:4-kafka
+            ghcr.io/blacktop/zeek:4.1-kafka
+            ghcr.io/blacktop/zeek:4.1.1-kafka
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Build and push Docker image (zeekctl)
@@ -115,7 +128,11 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             blacktop/zeek:ctl
-            blacktop/zeek:ctl-4
-            blacktop/zeek:ctl-4.1
-            blacktop/zeek:ctl-4.1.1
+            blacktop/zeek:4-ctl
+            blacktop/zeek:4.1-ctl
+            blacktop/zeek:4.1.1-ctl
+            ghcr.io/blacktop/zeek:ctl
+            ghcr.io/blacktop/zeek:4-ctl
+            ghcr.io/blacktop/zeek:4.1-ctl
+            ghcr.io/blacktop/zeek:4.1.1-ctl
           labels: ${{ steps.meta.outputs.labels }}
