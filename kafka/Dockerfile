@@ -68,12 +68,12 @@ RUN echo "===> Installing Community-Id..." \
 
 RUN echo "===> Installing apache/metron-bro-plugin-kafka package..." \
   && cd /tmp/zeek/auxil/ \
-  && apk add --no-cache librdkafka-dev \
-  && git clone https://github.com/apache/metron-bro-plugin-kafka.git \
+  && apk add --no-cache librdkafka librdkafka-dev libsasl gcc musl-dev \
+  # && git clone https://github.com/apache/metron-bro-plugin-kafka.git \
+  && git clone https://github.com/ckreibich/zeek-plugin-kafka.git metron-bro-plugin-kafka \
   && cd /tmp/zeek/auxil/metron-bro-plugin-kafka \
-  && find . -name "*.bro" -exec sh -c 'mv "$1" "${1%.bro}.zeek"' _ {} \; \
-  && sed -i 's/bro/zeek/g' ./configure \
   && ./configure --zeek-dist=/tmp/zeek \
+  && cd build \
   && make -j 2 \
   && make install \
   && /usr/local/zeek/bin/zeek -N Apache::Kafka
@@ -90,7 +90,7 @@ FROM alpine:3.14
 
 LABEL maintainer "https://github.com/blacktop"
 
-RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts librdkafka
+RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libmaxminddb libgcc fts librdkafka libsasl
 
 COPY --from=builder /usr/local/zeek /usr/local/zeek
 COPY local.zeek /usr/local/zeek/share/zeek/site/local.zeek
