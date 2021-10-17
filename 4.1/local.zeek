@@ -4,7 +4,7 @@
 
 # Installation-wide salt value that is used in some digest hashes, e.g., for
 # the creation of file IDs. Please change this to a hard to guess value.
-redef digest_salt = "Please change this value.";
+redef digest_salt = "blacktop";
 
 # This script logs which scripts were loaded during each run.
 @load misc/loaded-scripts
@@ -66,10 +66,6 @@ redef digest_salt = "Please change this value.";
 
 # This script prevents the logging of SSL CA certificates in x509.log
 @load protocols/ssl/log-hostcerts-only
-
-# Uncomment the following line to check each SSL certificate hash against the ICSI
-# certificate notary service; see http://notary.icsi.berkeley.edu .
-# @load protocols/ssl/notary
 
 # If you have GeoIP support built in, do some geographic detections and
 # logging for SSH traffic.
