@@ -53,7 +53,7 @@ RUN echo "===> Compiling af_packet plugin..." \
 
 RUN echo "===> Installing hosom/file-extraction package..." \
   && cd /tmp \
-  && git clone git://github.com/hosom/file-extraction \
+  && git clone https://github.com/hosom/file-extraction.git \
   && mv file-extraction/scripts /usr/local/zeek/share/zeek/site/file-extraction
 
 RUN echo "===> Installing Community-Id..." \
