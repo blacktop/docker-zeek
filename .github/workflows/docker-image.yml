@@ -84,6 +84,7 @@ jobs:
             ghcr.io/blacktop/zeek:4
             ghcr.io/blacktop/zeek:4.1
             ghcr.io/blacktop/zeek:4.1.1
+          platforms: linux/amd64,linux/arm64            
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Build and push Docker image (elastic)
@@ -101,6 +102,7 @@ jobs:
             ghcr.io/blacktop/zeek:4-elastic
             ghcr.io/blacktop/zeek:4.1-elastic
             ghcr.io/blacktop/zeek:4.1.1-elastic
+          platforms: linux/amd64,linux/arm64            
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Build and push Docker image (kafka)
@@ -118,6 +120,7 @@ jobs:
             ghcr.io/blacktop/zeek:4-kafka
             ghcr.io/blacktop/zeek:4.1-kafka
             ghcr.io/blacktop/zeek:4.1.1-kafka
+          platforms: linux/amd64,linux/arm64            
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Build and push Docker image (zeekctl)
@@ -135,4 +138,5 @@ jobs:
             ghcr.io/blacktop/zeek:4-ctl
             ghcr.io/blacktop/zeek:4.1-ctl
             ghcr.io/blacktop/zeek:4.1.1-ctl
+          platforms: linux/amd64,linux/arm64            
           labels: ${{ steps.meta.outputs.labels }}
