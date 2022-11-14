@@ -104,6 +104,9 @@ redef digest_salt = "blacktop";
 # Uncomment this to source zkg's package state
 # @load packages
 
+# Comment this to unload Corelight/CommunityID
+@load Corelight/CommunityID
+
 # Kafka Plugin
 @load Apache/Kafka
 redef Kafka::send_all_active_logs = T;
