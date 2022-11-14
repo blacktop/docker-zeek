@@ -101,6 +101,9 @@ redef digest_salt = "blacktop";
 # this adds the link-layer address for each connection endpoint to the conn.log file.
 @load policy/protocols/conn/mac-logging
 
+# Comment this to unload Corelight/CommunityID
+@load Corelight/CommunityID
+
 # Custom conn geoip enrichment
 @load geodata/conn-add-geodata.zeek
 # Log all plain-text http/ftp passwords
