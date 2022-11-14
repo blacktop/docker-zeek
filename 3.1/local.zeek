@@ -101,5 +101,5 @@
 # this adds the link-layer address for each connection endpoint to the conn.log file.
 # @load policy/protocols/conn/mac-logging
 
-# Uncomment this to load Corelight/CommunityID
+# Comment this to unload Corelight/CommunityID
 @load Corelight/CommunityID
