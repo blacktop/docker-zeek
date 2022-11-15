@@ -83,14 +83,30 @@ jobs:
           context: ./4.1
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            blacktop/zeek:latest
             blacktop/zeek:4
             blacktop/zeek:4.1
             blacktop/zeek:4.1.1
-            ghcr.io/blacktop/zeek:latest
             ghcr.io/blacktop/zeek:4
             ghcr.io/blacktop/zeek:4.1
             ghcr.io/blacktop/zeek:4.1.1
+          platforms: linux/amd64,linux/arm64            
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and push Docker image (v5.1)
+        id: docker_build_5_1
+        uses: docker/build-push-action@v2
+        with:
+          context: ./5.1
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            blacktop/zeek:latest
+            blacktop/zeek:5
+            blacktop/zeek:5.1
+            blacktop/zeek:5.1.0
+            ghcr.io/blacktop/zeek:latest
+            ghcr.io/blacktop/zeek:5
+            ghcr.io/blacktop/zeek:5.1
+            ghcr.io/blacktop/zeek:5.1.0
           platforms: linux/amd64,linux/arm64            
           labels: ${{ steps.meta.outputs.labels }}
 
