@@ -4,7 +4,7 @@
 
 # Installation-wide salt value that is used in some digest hashes, e.g., for
 # the creation of file IDs. Please change this to a hard to guess value.
-redef digest_salt = "Please change this value.";
+redef digest_salt = "blacktop";
 
 # This script logs which scripts were loaded during each run.
 @load misc/loaded-scripts
