@@ -103,3 +103,6 @@ redef digest_salt = "blacktop";
 
 # Uncomment this to source zkg's package state
 # @load packages
+
+# Comment this to unload Corelight/CommunityID
+@load Corelight/CommunityID
