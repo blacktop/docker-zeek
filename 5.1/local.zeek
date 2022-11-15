@@ -4,7 +4,7 @@
 
 # Installation-wide salt value that is used in some digest hashes, e.g., for
 # the creation of file IDs. Please change this to a hard to guess value.
-redef digest_salt = "blacktop";
+redef digest_salt = "Please change this value.";
 
 # This script logs which scripts were loaded during each run.
 @load misc/loaded-scripts
@@ -18,9 +18,10 @@ redef digest_salt = "blacktop";
 # Enable logging of memory, packet and lag statistics.
 @load misc/stats
 
-# Load the scan detection script.  It's disabled by default because
-# it often causes performance issues.
-#@load misc/scan
+# For TCP scan detection, we recommend installing the package from
+# 'https://github.com/ncsa/bro-simple-scan'. E.g., by installing it via
+#
+#     zkg install ncsa/bro-simple-scan
 
 # Detect traceroute being run on the network. This could possibly cause
 # performance trouble when there are a lot of traceroutes on your network.
@@ -88,6 +89,10 @@ redef digest_salt = "blacktop";
 
 # Extend email alerting to include hostnames
 @load policy/frameworks/notice/extend-email/hostnames
+
+# Enable logging of telemetry data into telemetry.log and
+# telemetry_histogram.log.
+@load frameworks/telemetry/log
 
 # Uncomment the following line to enable detection of the heartbleed attack. Enabling
 # this might impact performance a bit.
