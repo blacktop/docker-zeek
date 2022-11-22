@@ -1,4 +1,5 @@
 version: "3"
+
 services:
   elasticsearch:
     image: blacktop/elasticsearch:x-pack-7.4.0
@@ -47,4 +48,5 @@ services:
     network_mode: "host"
     command: -i af_packet::eth0 local
 
-networks: elastinet:
+networks:
+  elastinet:
