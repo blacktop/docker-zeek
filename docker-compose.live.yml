@@ -3,6 +3,7 @@ version: "3"
 services:
   elasticsearch:
     image: blacktop/elasticsearch:x-pack-7.4.0
+    restart: on-failure:5
     environment:
       - discovery.type=single-node
     ports:
@@ -14,6 +15,7 @@ services:
     depends_on:
       - elasticsearch
     image: blacktop/kibana:x-pack-7.4.0
+    restart: on-failure:5
     environment:
       - xpack.reporting.enabled=false
     ports:
@@ -27,6 +29,7 @@ services:
     depends_on:
       - kibana
     image: blacktop/filebeat:7.4.0
+    restart: on-failure:5
     links:
       - kibana
       - elasticsearch
@@ -41,6 +44,7 @@ services:
       - filebeat
     build: ./elastic
     image: blacktop/zeek:elastic
+    restart: on-failure:5
     volumes:
       - ./pcap:/pcap
     cap_add:
