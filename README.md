@@ -37,6 +37,7 @@ $ docker images
 
 REPOSITORY           TAG          SIZE
 blacktop/zeek        latest       65.6MB
+blacktop/zeek        5.1          65.6MB
 blacktop/zeek        4.1          65.6MB
 blacktop/zeek        4.0          41.6MB
 blacktop/zeek        3.2          41.6MB
@@ -99,4 +100,4 @@ Find a bug? Want more features? Find something missing in the documentation? Let
 
 ## License
 
-MIT Copyright (c) 2018-2020 **blacktop**
+MIT Copyright (c) 2018-2022 **blacktop**
